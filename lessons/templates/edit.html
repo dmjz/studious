@@ -1,0 +1,45 @@
+{% load static %}
+
+<html lang="en-us">
+
+<head>
+    <meta charset="utf-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <script src="https://unpkg.com/wanakana"></script>
+</head>
+
+<body>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">New Lesson</h1>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <form>
+            <div class="form-group">
+                <label for="titleFormInput">Title</label>
+                <input type="text" class="form-control" id="titleFormInput">
+            </div>
+            <div class="form-group">
+                <label for="overviewFormTextarea">Overview</label>
+                <textarea class="form-control" id="overviewFormTextarea" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="fullLessonFormTextarea">Full lesson</label>
+                <textarea class="form-control" id="fullLessonFormTextarea" rows="8"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="examplesFormTextarea">Examples</label>
+                <textarea class="form-control" id="examplesFormTextarea" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
