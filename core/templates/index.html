@@ -26,7 +26,6 @@
     <script>
         var textInput = document.getElementById('kana-input');
         var textStore = document.getElementById('kana-store');
-        wanakana.bind(textInput);
         var onEnter = function(e) {
             if (e.keyCode == 13) { // 'Enter'
                 textStore.value = textInput.value;
@@ -37,6 +36,7 @@
             }
         }
         textInput.addEventListener("keypress", onEnter)
+        wanakana.bind(textInput);
     </script>
 </body>
 </html>
