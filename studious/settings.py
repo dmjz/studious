@@ -99,6 +99,9 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
 
-# THIS SHOULD BE LAST LINE OF settings.py:
-# (hacky way to make dj-database-url work)
-del DATABASES['default']['OPTIONS']['sslmode']
+# BELOW SHOULD BE THE LAST LINES IN settings.py
+# Import local_settings, if available
+try:
+    from .settings_local import *
+except ImportError:
+    pass
