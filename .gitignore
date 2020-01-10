@@ -1,0 +1,6 @@
+.env
+.vscode
+**.pyc
+db.sqlite3
+twatter/settings_local.py
+
