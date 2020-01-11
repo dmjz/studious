@@ -12,40 +12,10 @@
 
     <div class="container-fluid">
 
-        <!-- Go to login page -->
-        <div class="row">
-            <a class="btn btn-primary" href="{% url 'login' %}" role="button">Login</a>
-        </div>
-
-        <!-- Hiragana conversion box with input store -->
-        <div class="row">
-            <div class="textbox col-sm-6" lang="ja-jp">
-                <h6>Input</h6>
-                <textarea id="kana-input"></textarea>
-            </div>
-
-            <div class="textbox col-sm-6" lang="ja-jp">
-                <h6>Store</h6>
-                <textarea id="kana-store"></textarea>
-            </div>
-        </div>
+        <h2>Home</h2>
+        <a class="btn btn-primary" href="{% url 'login' %}" role="button">Login</a>
+        <a class="btn btn-primary" href="{% url 'signup' %}" role="button">Signup</a>
 
     </div>
-
-    <script>
-        var textInput = document.getElementById('kana-input');
-        var textStore = document.getElementById('kana-store');
-        var onEnter = function(e) {
-            if (e.keyCode == 13) { // 'Enter'
-                textStore.value = textInput.value;
-                textInput.value = '';
-                console.log("Pressed Enter");
-                console.log(textStore.value + " --- " + textInput.value);
-                e.preventDefault();
-            }
-        }
-        textInput.addEventListener("keypress", onEnter)
-        wanakana.bind(textInput);
-    </script>
 </body>
 </html>

@@ -10,6 +10,14 @@
 
 <body>
     <div class="container-fluid">
+
+        <h2>Profile: {{ user.username }}</h2>
+        <p>Email: {{ user.email }}</p>
+
+        <a class="btn btn-primary" href="{% url 'logout' %}" role="button">Logout</a>
+
+        <a class="btn btn-primary" href="{% url 'password_change' %}" role="button">Change password</a>
+
         <div class="row">
             <div class="textbox col-sm-6" lang="ja-jp">
                 <h6>Input</h6>
@@ -26,7 +34,7 @@
     <script>
         var textInput = document.getElementById('kana-input');
         var textStore = document.getElementById('kana-store');
-        var onEnter = function(e) {
+        var onEnter = function (e) {
             if (e.keyCode == 13) { // 'Enter'
                 textStore.value = textInput.value;
                 textInput.value = '';
@@ -39,4 +47,5 @@
         wanakana.bind(textInput);
     </script>
 </body>
+
 </html>

@@ -12,12 +12,14 @@
     <div class="container-fluid">
 
         <h2>Login</h2>
-
         <form method="POST">{% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
-        
+
+        <h2>New user?</h2>
+        <a class="btn btn-primary" href="{% url 'signup' %}" role="button">Signup</a>
+
     </div>
 </body>
 </html>
