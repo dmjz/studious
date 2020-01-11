@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 DEBUG = False
 ALLOWED_HOSTS =  ['.herokuapp.com']
 
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'profile'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
