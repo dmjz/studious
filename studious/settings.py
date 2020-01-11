@@ -22,8 +22,8 @@ if os.path.isfile(dotenvFile):
     load_dotenv(dotenvFile)
 
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
-DEBUG = True
-ALLOWED_HOSTS = []
+DEBUG = False
+ALLOWED_HOSTS =  ['.herokuapp.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -1,8 +1,8 @@
 from django.urls import path
-from core.views import index, login, profile
+from core.views import home, login, profile
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', index, name='home'),
     path('login/', login, name='login'),
     path('profile/', profile, name='profile'),
 ]
