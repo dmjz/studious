@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.http import Http404
+from django.urls import Resolver404
 from .forms import SignupForm
 
 # Create your views here.
@@ -41,6 +42,10 @@ def signup(request):
             login(request, checkUser)
             return redirect('profile')
         else:
-            raise Http404(str(form.errors.as_data()))
+            message = '\n'.join((f'{k}: {v}' for k, v in form.errors.as_data().items()))
+            raise Http404(message)
     else:
         return render(request, 'signup.html', {'form': SignupForm()})
+
+def handler404(request, exception):
+    return render(request, '404.html')
