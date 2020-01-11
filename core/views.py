@@ -7,7 +7,7 @@ from .forms import SignupForm
 def home(request):
     return render(request, 'home.html')
 
-# TODO: use a decorator to actually implement this
+# TODO: use a decorator or mixin to actually implement this
 # def login_view(request):
 #     if request.user.is_authenticated:
 #         return redirect('profile')
@@ -35,18 +35,9 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             user = form.save()
-            if user is None:
-                raise Http404(
-                    'Sorry, we couldn\'t sign you up. Maybe the username or email is already registered?'
-                )
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1') # 'password' gets hash; 'password1' gets actual
             checkUser = authenticate(username=username, password=password)
-            if checkUser is None:
-                raise Http404(
-                    'Sorry, something went wrong when we tried to log you in.'
-                    '\nTry logging in manually. If this doesn\'t work, you may need to create a new account.'
-                )
             login(request, checkUser)
             return redirect('profile')
         else:
