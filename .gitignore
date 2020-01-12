@@ -3,4 +3,4 @@
 **.pyc
 db.sqlite3
 studious/settings_local.py
-
+staticfiles/*
