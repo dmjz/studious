@@ -14,9 +14,18 @@
         <h2>Profile: {{ user.username }}</h2>
         <p>Email: {{ user.email }}</p>
 
-        <a class="btn btn-primary" href="{% url 'logout' %}" role="button">Logout</a>
+        <div class="row profile-group">
+            <p>Lessons</p>
+            <a class="btn btn-primary" href="{% url 'new' %}" role="button">New</a>
+            <a class="btn btn-primary" href="{% url 'edit' %}" role="button">Edit</a>
+            <a class="btn btn-primary" href="{% url 'view' %}" role="button">View</a>
+        </div>
 
-        <a class="btn btn-primary" href="{% url 'password_change' %}" role="button">Change password</a>
+        <div class="row profile-group">
+            <p>Account</p>
+            <a class="btn btn-primary" href="{% url 'logout' %}" role="button">Logout</a>
+            <a class="btn btn-primary" href="{% url 'password_change' %}" role="button">Change password</a>
+        </div>
 
         <div class="row">
             <div class="textbox col-sm-6" lang="ja-jp">

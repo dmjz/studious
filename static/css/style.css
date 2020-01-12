@@ -3,7 +3,10 @@ h2 {
 }
 
 .profile-group {
-    margin:     1rem;
-    padding:    1rem;
+    margin: 1rem;
     background-color:   #bbbbbb;
+}
+
+.profile-group a, .profile-group p {
+    margin: 1rem;
 }
