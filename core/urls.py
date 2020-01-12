@@ -2,8 +2,6 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from core.views import home, logout_view, profile, password_done, signup
 
-handler404 = 'core.views.handler404'
-
 urlpatterns = [
     path('', home, name='home'),
     path('signup/', signup, name='signup'),
