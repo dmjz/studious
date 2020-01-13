@@ -19,18 +19,19 @@
     </div>
 
     <div class="container-fluid">
-        <form>
+        <form method="POST" action="{% url 'new' %}">
+            {% csrf_token %}
             <div class="form-group">
                 <label for="titleFormInput">Title</label>
-                <input type="text" class="form-control" id="titleFormInput">
+                <input type="text" class="form-control" id="titleFormInput" name="titleFormInput">
             </div>
             <div class="form-group">
                 <label for="fullLessonFormTextarea">Lesson</label>
-                <textarea class="form-control" id="fullLessonFormTextarea" rows="8"></textarea>
+                <textarea class="form-control" id="fullLessonFormTextarea" rows="8" name="fullLessonFormTextarea"></textarea>
             </div>
             <div class="form-group">
                 <label for="examplesFormTextarea">Examples</label>
-                <textarea class="form-control" id="examplesFormTextarea" rows="4"></textarea>
+                <textarea class="form-control" id="examplesFormTextarea" rows="4" name="examplesFormTextarea"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
