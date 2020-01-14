@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-from lessons.lessons import lesson_from_post, save_lesson
 from lessons.models import Lesson
 from django.utils import timezone
 from django.conf import settings
@@ -12,7 +11,12 @@ from django.contrib.auth.decorators import login_required
 def new(request):
     if request.method == 'POST':
         # Create and save new lesson
-        lessonData = json.dumps(lesson_from_post(request.POST))
+        lessonData = {
+            'title':    request.POST.get('titleFormInput'),
+            'lesson':   request.POST.get('fullLessonFormTextarea'),
+            'examples': request.POST.get('examplesFormTextarea'),
+        }
+        lessonData = json.dumps(lessonData)
         lesson = Lesson(
             owner   = request.user,
             created = timezone.now(), 
@@ -27,5 +31,9 @@ def edit(request):
     return render(request, 'edit.html')
 
 @login_required
-def view(request):
-    return render(request, 'view.html')
+def view(request, user_id, lesson_id):
+    lesson = Lesson.objects.get(id=lesson_id)
+    lesson.file.open(mode='r')
+    lessonData = json.loads(lesson.file.read())
+    lesson.file.close()
+    return render(request, 'view.html', {'lesson': lessonData})

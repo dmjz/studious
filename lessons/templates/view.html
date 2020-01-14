@@ -19,17 +19,25 @@
     </div>
 
     <div class="container-fluid">
-        <div class="row">
-            <h2>Lesson: {{ lesson.title }}</h2>
+        <div class="lesson-group container-fluid">
+            <div class="row">
+                <h2>{{ lesson.title }}</h2>
+            </div>
         </div>
 
-        <div class="row">
-            <p>{{ lesson.lesson }}</p>
+        <div class="lesson-group container-fluid">
+            <div class="row white-space-pre">
+                <p>{{ lesson.lesson }}</p>
+            </div>
         </div>
 
-        <div class="row">
-            <h4>Examples</h4>
-            <p>{{ lesson.examples }}</p>
+        <div class="lesson-group container-fluid">
+            <div class="row">
+                <h4>Examples</h4>
+            </div>
+            <div class="row white-space-pre">
+                <p>{{ lesson.examples }}</p>
+            </div>
         </div>
 
     </div>

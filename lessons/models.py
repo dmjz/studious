@@ -19,4 +19,4 @@ class Lesson(models.Model):
     file = models.FileField(upload_to=user_directory_path, storage=storage, max_length=200)
 
     def __str__(self):
-        return f'<Lesson: { self.owner } { self.created }>'
+        return f'<Lesson { self.id }: { self.owner } { self.created }>'

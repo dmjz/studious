@@ -10,3 +10,12 @@ h2 {
 .profile-group a, .profile-group p {
     margin: 1rem;
 }
+
+.white-space-pre {
+    white-space: pre-wrap;
+}
+
+.lesson-group {
+    margin: 1rem;
+    background-color:   #bbbbbb;
+}
