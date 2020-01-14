@@ -19,7 +19,19 @@
     </div>
 
     <div class="container-fluid">
-        <p>Your lesson will be displayed here</p>
+        <div class="row">
+            <h2>Lesson: {{ lesson.title }}</h2>
+        </div>
+
+        <div class="row">
+            <p>{{ lesson.lesson }}</p>
+        </div>
+
+        <div class="row">
+            <h4>Examples</h4>
+            <p>{{ lesson.examples }}</p>
+        </div>
+
     </div>
 
 </body>

@@ -3,30 +3,22 @@ from django.contrib.auth import login, logout, authenticate
 from django.http import Http404
 from django.urls import Resolver404
 from .forms import SignupForm
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 def home(request):
     return render(request, 'home.html')
-
-# TODO: use a decorator or mixin to actually implement this
-# def login_view(request):
-#     if request.user.is_authenticated:
-#         return redirect('profile')
-#     return render(request, 'login.html')
 
 def logout_view(request):
     logout(request)
     return redirect('home')
 
+@login_required
 def profile(request):
-    if request.user.is_authenticated:
-        return render(request, 'profile.html')
-    return redirect('login')
+    return render(request, 'profile.html')
 
+@login_required
 def password_change(request):
-    if request.user.is_authenticated:
-        return render(request, 'password_change.html')
-    return redirect('login')
+    return render(request, 'password_change.html')
 
 def password_done(request):
     return redirect('profile')
