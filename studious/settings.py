@@ -103,6 +103,9 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.CompressedManifestStaticFilesStorage'
 django_heroku.settings(locals())
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # BELOW SHOULD BE THE LAST LINES IN settings.py
 # Import local_settings, if available
 try:

@@ -4,5 +4,5 @@
 db.sqlite3
 studious/settings_local.py
 staticfiles/*
-storage/*
+media/*
 */migrations/*
