@@ -23,15 +23,31 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="titleFormInput">Title</label>
-                <input type="text" class="form-control" id="titleFormInput" name="titleFormInput">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="titleFormInput" 
+                    name="titleFormInput" 
+                    maxlength="500"
+                    >
             </div>
             <div class="form-group">
                 <label for="fullLessonFormTextarea">Lesson</label>
-                <textarea class="form-control" id="fullLessonFormTextarea" rows="8" name="fullLessonFormTextarea"></textarea>
+                <textarea 
+                    class="form-control" 
+                    id="fullLessonFormTextarea" 
+                    rows="8" 
+                    name="fullLessonFormTextarea"
+                    ></textarea>
             </div>
             <div class="form-group">
                 <label for="examplesFormTextarea">Examples</label>
-                <textarea class="form-control" id="examplesFormTextarea" rows="4" name="examplesFormTextarea"></textarea>
+                <textarea 
+                    class="form-control" 
+                    id="examplesFormTextarea" 
+                    rows="4" 
+                    name="examplesFormTextarea"
+                    ></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>

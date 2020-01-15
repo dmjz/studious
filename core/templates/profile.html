@@ -15,10 +15,35 @@
         <p>Email: {{ user.email }}</p>
 
         <div class="row profile-group">
-            <p>Lessons</p>
-            <a class="btn btn-primary" href="{% url 'new' %}" role="button">New</a>
-            <a class="btn btn-primary" href="{% url 'edit' %}" role="button">Edit</a>
-            <a class="btn btn-primary" href="{% url 'view' %}" role="button">View</a>
+            <a class="btn btn-primary" href="{% url 'new' %}" role="button">New lesson</a>
+        </div>
+
+        <div class="row profile-group">
+            <ul style="list-style-type: none;">
+                <li></li>
+                <li><h4>My lessons</h4></li>
+            {% if not lessons %}
+                <li>
+                    <p>No lessons yet!</p>
+                </li>
+            {% else %}
+                {% for lesson in lessons %}
+                <li>
+                    {{ lesson.title }}
+                    <a 
+                        class="btn btn-primary" 
+                        href="{% url 'edit' lesson_id=lesson.id %}" 
+                        role="button"
+                    >Edit</a>
+                    <a 
+                        class="btn btn-primary" 
+                        href="{% url 'view' lesson_id=lesson.id %}" 
+                        role="button"
+                    >View</a>
+                </li>
+                {% endfor %}
+            {% endif %}
+            </ul>
         </div>
 
         <div class="row profile-group">

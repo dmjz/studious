@@ -4,6 +4,7 @@ from django.http import Http404
 from django.urls import Resolver404
 from .forms import SignupForm
 from django.contrib.auth.decorators import login_required
+from lessons.models import Lesson
 
 def home(request):
     return render(request, 'home.html')
@@ -14,7 +15,8 @@ def logout_view(request):
 
 @login_required
 def profile(request):
-    return render(request, 'profile.html')
+    lessons = Lesson.objects.filter(owner=request.user.id)
+    return render(request, 'profile.html', {'lessons': lessons})
 
 @login_required
 def password_change(request):

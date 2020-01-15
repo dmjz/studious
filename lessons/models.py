@@ -15,6 +15,7 @@ def user_directory_path(instance, filename):
 class Lesson(models.Model):
     uuid = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
     owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    title = models.TextField(default='Untitled', max_length=500)
     created = models.DateTimeField()
     file = models.FileField(upload_to=user_directory_path, storage=storage, max_length=200)
 
