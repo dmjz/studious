@@ -7,7 +7,6 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <script src="https://unpkg.com/wanakana"></script>
 </head>
 
 <body>
@@ -37,6 +36,22 @@
             </div>
             <div class="row white-space-pre">
                 <p>{{ lesson.examples }}</p>
+            </div>
+        </div>
+
+        <div class="lesson-group container-fluid">
+            <div class="row">
+                <a 
+                    class="btn btn-primary" 
+                    href="{% url 'edit' lesson_id=lesson_id %}" 
+                    role="button"
+                >Edit this lesson</a>
+                <a 
+                    class="btn btn-primary" 
+                    href="{% url 'profile' %}" 
+                    role="button"
+                    style="margin-left: 1rem;"
+                >Back to my profile</a>
             </div>
         </div>
 

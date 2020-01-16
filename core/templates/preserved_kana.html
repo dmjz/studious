@@ -1,0 +1,43 @@
+{% load static %}
+
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <script src="https://unpkg.com/wanakana"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="textbox col-sm-6" lang="ja-jp">
+                <h6>Input</h6>
+                <textarea id="kana-input"></textarea>
+            </div>
+
+            <div class="textbox col-sm-6" lang="ja-jp">
+                <h6>Store</h6>
+                <textarea id="kana-store"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var textInput = document.getElementById('kana-input');
+        var textStore = document.getElementById('kana-store');
+        var onEnter = function (e) {
+            if (e.keyCode == 13) { // 'Enter'
+                textStore.value = textInput.value;
+                textInput.value = '';
+                console.log("Pressed Enter");
+                console.log(textStore.value + " --- " + textInput.value);
+                e.preventDefault();
+            }
+        }
+        textInput.addEventListener("keypress", onEnter)
+        wanakana.bind(textInput);
+    </script>
+</body>
+
+</html>
