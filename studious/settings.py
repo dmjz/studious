@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages',
+    'static',
     'core',
     'lessons',
 ]
@@ -96,11 +98,22 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = '/static/'
+AWS_ACCESS_KEY_ID = os.environ['S3_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['S3_KEY']
+AWS_STORAGE_BUCKET_NAME = 'studious-assets'
+AWS_S3_REGION_NAME = 'us-east-2'
+S3_STORAGE_LOCATION = 'static'
+AWS_S3_CUSTOM_DOMAIN  = 'studious-assets.s3.us-east-2.amazonaws.com'
+AWS_LOCATION = 'static'
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATICFILES_STORAGE = 'whitenoise.CompressedManifestStaticFilesStorage'
+STATIC_URL = f'https://{ AWS_S3_CUSTOM_DOMAIN }/{ AWS_LOCATION }/'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 django_heroku.settings(locals())
 
 MEDIA_URL = '/media/'
