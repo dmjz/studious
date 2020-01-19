@@ -29,17 +29,15 @@ LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'home'
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'storages',
-    'static',
     'core',
     'lessons',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +48,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'studious.urls'
@@ -101,20 +98,19 @@ USE_TZ = True
 AWS_ACCESS_KEY_ID = os.environ['S3_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['S3_KEY']
 AWS_STORAGE_BUCKET_NAME = 'studious-assets'
+AWS_DEFAULT_ACL = None
 AWS_S3_REGION_NAME = 'us-east-2'
-S3_STORAGE_LOCATION = 'static'
-AWS_S3_CUSTOM_DOMAIN  = 'studious-assets.s3.us-east-2.amazonaws.com'
+AWS_S3_CUSTOM_DOMAIN  = f'{ AWS_STORAGE_BUCKET_NAME }.s3.{ AWS_S3_REGION_NAME }.amazonaws.com'
 AWS_LOCATION = 'static'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_URL = f'https://{ AWS_S3_CUSTOM_DOMAIN }/{ AWS_LOCATION }/'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-django_heroku.settings(locals())
+STATIC_URL = f'https://{ AWS_S3_CUSTOM_DOMAIN }/'
+# django_heroku.settings(locals())
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
