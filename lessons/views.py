@@ -31,6 +31,10 @@ def get_validated_lesson_data(request):
     return validated_lesson(get_lesson_data(request))
 
 def read_lesson_data(lesson):
+    ###
+    ### TODO:
+    ### Rewrite so S3 loads a lesson file here
+    ###
     lesson.file.open(mode='r')
     lessonData = json.loads(lesson.file.read())
     lesson.file.close()
@@ -41,13 +45,21 @@ def new(request):
     if request.method == 'POST':
         # Create and save new lesson
         lessonData = get_validated_lesson_data(request)
-        lessonFile = ContentFile(json.dumps(lessonData), name='dummy_name')
+        lessonFile = ContentFile(
+            json.dumps(lessonData).encode('utf-8'), 
+            name='dummy_name'
+        )
         lesson = Lesson(
             owner   = request.user,
             title   = lessonData['title'],
             created = timezone.now(), 
             file    = lessonFile,
         )
+        ###
+        ### TODO:
+        ### Rewrite so S3 saves the lesson file here
+        ### May need to edit the Lesson model file part (already set file.storage to PublicMediaStorage)
+        ###
         if lesson:
             lesson.save()
             return redirect('profile')

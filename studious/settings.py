@@ -101,19 +101,20 @@ AWS_STORAGE_BUCKET_NAME = 'studious-assets'
 AWS_DEFAULT_ACL = None
 AWS_S3_REGION_NAME = 'us-east-2'
 AWS_S3_CUSTOM_DOMAIN  = f'{ AWS_STORAGE_BUCKET_NAME }.s3.{ AWS_S3_REGION_NAME }.amazonaws.com'
-AWS_LOCATION = 'static'
+AWS_STATIC_LOCATION = 'static'
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'studious.storage_backends.StaticStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 STATIC_URL = f'https://{ AWS_S3_CUSTOM_DOMAIN }/'
 # django_heroku.settings(locals())
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+DEFAULT_FILE_STORAGE = 'studious.storage_backends.PublicMediaStorage'
 
 # BELOW SHOULD BE THE LAST LINES IN settings.py
 # Import local_settings, if available
