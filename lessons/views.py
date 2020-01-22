@@ -8,33 +8,22 @@ import json
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 
-def get_lesson_data(request):
-    return {
+def get_validated_lesson_data(request):
+    """ From a request, raise Http404 or return validated lessonData """
+
+    lessonData = {
         'title':    request.POST.get('titleFormInput'),
         'lesson':   request.POST.get('fullLessonFormTextarea'),
         'examples': request.POST.get('examplesFormTextarea'),
     }
-
-def validated_lesson(lessonData):
-    """ Raise Http404 or return validated lessonData """
-
-    for field in lessonData:
+    for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 2000)):
         if not lessonData.get(field):
             raise Http404(f'The required lesson field { field } is missing or empty.')
-    if len(lessonData['title']) > 500:
-        raise Http404('Sorry, the title is too long! The max length is 500 characters.')
+        if len(lessonData[field]) > maxLength:
+            raise Http404(f'Sorry, the { field } section is too long! The max length is { maxLength } characters.')
     return lessonData
 
-def get_validated_lesson_data(request):
-    """ Raise Http404 or return validated lesson data """
-
-    return validated_lesson(get_lesson_data(request))
-
 def read_lesson_data(lesson):
-    ###
-    ### TODO:
-    ### Rewrite so S3 loads a lesson file here
-    ###
     lesson.file.open(mode='r')
     lessonData = json.loads(lesson.file.read())
     lesson.file.close()
@@ -45,21 +34,15 @@ def new(request):
     if request.method == 'POST':
         # Create and save new lesson
         lessonData = get_validated_lesson_data(request)
-        lessonFile = ContentFile(
-            json.dumps(lessonData).encode('utf-8'), 
-            name='dummy_name'
-        )
         lesson = Lesson(
             owner   = request.user,
             title   = lessonData['title'],
             created = timezone.now(), 
-            file    = lessonFile,
+            file    = ContentFile(
+                json.dumps(lessonData).encode('utf-8'), 
+                name='dummy_name'
+            ),
         )
-        ###
-        ### TODO:
-        ### Rewrite so S3 saves the lesson file here
-        ### May need to edit the Lesson model file part (already set file.storage to PublicMediaStorage)
-        ###
         if lesson:
             lesson.save()
             return redirect('profile')
@@ -76,7 +59,10 @@ def edit(request, lesson_id):
     if request.method == 'POST':
         # Modify and save lesson
         lessonData = get_validated_lesson_data(request)
-        lessonFile = ContentFile(json.dumps(lessonData), name='dummy_name')
+        lessonFile = ContentFile(
+            json.dumps(lessonData).encode('utf-8'),
+            name='dummy_name'
+        )
         lesson.title, lesson.file = lessonData['title'], lessonFile
         lesson.save(update_fields=['title', 'file'])
         return redirect('view', lesson_id=lesson_id)
