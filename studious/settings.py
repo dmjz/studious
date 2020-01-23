@@ -27,6 +27,7 @@ ALLOWED_HOSTS =  ['.herokuapp.com']
 
 LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REQUIRED_REDIRECT = '/login/'
 
 INSTALLED_APPS = [
     'django.contrib.admin',

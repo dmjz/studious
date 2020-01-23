@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.http import Http404
 from django.urls import Resolver404
 from .forms import SignupForm
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from lessons.models import Lesson
 
@@ -13,12 +14,12 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
-@login_required
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def profile(request):
     lessons = Lesson.objects.filter(owner=request.user.id)
     return render(request, 'profile.html', {'lessons': lessons})
 
-@login_required
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def password_change(request):
     return render(request, 'password_change.html')
 

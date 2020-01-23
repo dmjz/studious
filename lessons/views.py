@@ -29,7 +29,7 @@ def read_lesson_data(lesson):
     lesson.file.close()
     return lessonData
 
-@login_required
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def new(request):
     if request.method == 'POST':
         # Create and save new lesson
@@ -51,7 +51,7 @@ def new(request):
     else:
         return render(request, 'new.html')
 
-@login_required
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def edit(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     if request.user != lesson.owner:
@@ -74,7 +74,7 @@ def edit(request, lesson_id):
             {'lesson': lessonData, 'lesson_id': lesson_id},
         )
 
-@login_required
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def view(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     lessonData = read_lesson_data(lesson)
