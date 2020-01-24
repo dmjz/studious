@@ -1,62 +1,50 @@
+{% extends "base.html" %}
 {% load static %}
 
-<html lang="en-us">
+{% block title %}Studious - Home{% endblock %}
 
-<head>
-    <meta charset="utf-8">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-</head>
-
-<body>
-
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">Edit lesson</h1>
-        </div>
+{% block content %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Edit lesson</h1>
     </div>
+</div>
 
-    <div class="container-fluid">
-        <form method="POST" action="{% url 'edit' lesson_id=lesson_id %}">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="titleFormInput">Title</label>
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    id="titleFormInput" 
-                    name="titleFormInput" 
-                    maxlength="500"
-                    value="{{ lesson.title }}"
-                    >
-            </div>
-            <div class="form-group">
-                <label for="fullLessonFormTextarea">Lesson</label>
-                <textarea 
-                    class="form-control" 
-                    id="fullLessonFormTextarea" 
-                    rows="8" 
-                    name="fullLessonFormTextarea"
-                    >{{ lesson.lesson }}</textarea>
-            </div>
-            <div class="form-group">
-                <label for="examplesFormTextarea">Examples</label>
-                <textarea 
-                    class="form-control" 
-                    id="examplesFormTextarea" 
-                    rows="4" 
-                    name="examplesFormTextarea"
-                >{{ lesson.examples }}</textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Save edits</button>
-            <button 
-                class="btn btn-secondary"
-                onclick="window.history.back()"
-            >Cancel and exit</button>
-        </form>
+<form method="POST" action="{% url 'edit' lesson_id=lesson_id %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="titleFormInput">Title</label>
+        <input 
+            type="text" 
+            class="form-control" 
+            id="titleFormInput" 
+            name="titleFormInput" 
+            maxlength="500"
+            value="{{ lesson.title }}"
+            >
     </div>
-
-</body>
-
-</html>
+    <div class="form-group">
+        <label for="fullLessonFormTextarea">Lesson</label>
+        <textarea 
+            class="form-control" 
+            id="fullLessonFormTextarea" 
+            rows="8" 
+            name="fullLessonFormTextarea"
+            >{{ lesson.lesson }}</textarea>
+    </div>
+    <div class="form-group">
+        <label for="examplesFormTextarea">Examples</label>
+        <textarea 
+            class="form-control" 
+            id="examplesFormTextarea" 
+            rows="4" 
+            name="examplesFormTextarea"
+        >{{ lesson.examples }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Save edits</button>
+    <button 
+        class="btn btn-secondary"
+        onclick="window.history.back()"
+    >Cancel and exit</button>
+</form>
+{% endblock %}
