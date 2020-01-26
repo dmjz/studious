@@ -16,5 +16,12 @@
     color: #FFFFFF;
 }
 
+.a-btn {
+    text-decoration: none !important;
+}
+.a-btn > div:hover {
+    background-color: #9d2f2f;
+}
+
 /* To fix navbar overlap */
-body { padding-top: 70px; }
+body { padding-top: 80px; }

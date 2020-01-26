@@ -3,9 +3,49 @@
 
 {% block title %}Studious - Home{% endblock %}
 
+{% block head %}
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+{% endblock %}
+
 {% block content %}
-<h2>Home</h2>
-<a class="btn btn-primary" href="{% url 'profile' %}" role="button">Profile</a>
-<a class="btn btn-primary" href="{% url 'login' %}" role="button">Login</a>
-<a class="btn btn-primary" href="{% url 'signup' %}" role="button">Signup</a>
+<div class="jumbotron jumbotron-fluid pl-4 color-2 shadow-sm">
+    <h1 class="display-4">Welcome to Studious!</h1>
+    <p class="lead">The best tool to design and organize your learning.</p>
+</div>
+
+<div class="row">
+    <div class="col-sm d-flex">
+        <div class="card shadow flex-fill text-center color-2" style="width: 18rem;">
+            <div class="card-body">
+                <i class="fa fa-pencil-square-o fa-2x my-2"></i>
+                <h2 class="card-title">Create lessons</h2>
+                <p class="card-text">Text, pictures, video, links, LaTeX, multiple alphabets - everything you need to learn</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm d-flex">
+        <div class="card shadow flex-fill text-center color-2" style="width: 18rem;">
+            <div class="card-body">
+                <i class="fa fa-book fa-2x my-2"></i>
+                <h2 class="card-title">Study smart</h2>
+                <p class="card-text">Our spaced repetition system enables you to learn efficiently, instead of wasting time with rote memorization</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm d-flex">
+        <div class="card shadow flex-fill text-center color-2" style="width: 18rem;">
+            <div class="card-body">
+                <i class="fa fa-comment fa-2x my-2"></i>
+                <h2 class="card-title">Share knowledge</h2>
+                <p class="card-text">Share lessons with friends, or make them public and see what other people are learning!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="{% url 'signup' %}" class="a-btn">
+    <div class="jumbotron jumbotron-fluid my-4 p-2 color-3 text-center shadow border rounded">
+        <h2 class="display-4">Get started</h2>
+    </div>
+</a>
 {% endblock %}
