@@ -1,21 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Studious - Home{% endblock %}
+{% block title %}Studious - View lesson{% endblock %}
 
 {% block content %}
-
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-4">View lesson</h1>
-    </div>
-</div>
-
-<div class="lesson-group container-fluid">
-    <div class="row">
-        <h2>{{ lesson.title }}</h2>
-    </div>
-</div>
+<h1 class="display-4">{{ lesson.title }}</h1>
 
 <div class="lesson-group container-fluid">
     <div class="row white-space-pre">

@@ -1,25 +1,20 @@
+{% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
-<html lang="en-us">
-<head>
-    <meta charset="utf-8">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <script src="https://unpkg.com/wanakana"></script>
-</head>
+{% block title %}Studious - Login{% endblock %}
 
-<body>
-    <div class="container-fluid">
+{% block content %}
+<div class="m-4 p-4 shadow rounded-sm color-2">
+    <h1 class="display-4">Login</h1>
+    <form method="POST">{% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
 
-        <h2>Login</h2>
-        <form method="POST">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
-
-        <h2>New user?</h2>
-        <a class="btn btn-primary" href="{% url 'signup' %}" role="button">Signup</a>
-
-    </div>
-</body>
-</html>
+<div class="m-4 p-4 shadow-sm rounded-sm color-2">
+    <h1 class="display-4">New user?</h1>
+    <a class="btn btn-primary" href="{% url 'signup' %}" role="button">Sign up</a>
+</div>
+{% endblock %}

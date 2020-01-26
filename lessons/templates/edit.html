@@ -1,14 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Studious - Home{% endblock %}
+{% block title %}Studious - Edit lesson{% endblock %}
 
 {% block content %}
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-4">Edit lesson</h1>
-    </div>
-</div>
+<h1 class="display-4">Edit lesson</h1>
 
 <form method="POST" action="{% url 'edit' lesson_id=lesson_id %}">
     {% csrf_token %}

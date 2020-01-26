@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'core',
     'lessons',
     'storages',
@@ -116,6 +117,8 @@ STATIC_URL = f'https://{ AWS_S3_CUSTOM_DOMAIN }/'
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_FILE_STORAGE = 'studious.storage_backends.PublicMediaStorage'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # BELOW SHOULD BE THE LAST LINES IN settings.py
 # Import local_settings, if available

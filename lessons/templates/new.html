@@ -1,14 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Studious - Home{% endblock %}
+{% block title %}Studious - New lesson{% endblock %}
 
 {% block content %}
-<div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        <h1 class="display-4">New Lesson</h1>
-    </div>
-</div>
+<h1 class="display-4">New Lesson</h1>
 
 <form method="POST" action="{% url 'new' %}">
     {% csrf_token %}
