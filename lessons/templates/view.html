@@ -3,15 +3,23 @@
 
 {% block title %}Studious - View lesson{% endblock %}
 
+{% block head %}
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"
+    crossorigin="anonymous">
+</script>
+{% endblock %}
+
 {% block content %}
 <h1 class="display-4">{{ lesson.title }}</h1>
 
-<div class="lesson-group container-fluid">
-    <div class="row white-space-pre">
-        <p>{{ lesson.lesson }}</p>
-    </div>
-</div>
+<!-- Hidden div to hold lesson text -->
+<textarea id="lesson-body-source" class="invisible d-none">{{ lesson.lesson }}</textarea>
 
+<!-- Div to hold HTML converted from Markdown lesson text -->
+<div id="lesson-body" class="lesson-group container-fluid"></div>
+
+<!-- Examples -->
 <div class="lesson-group container-fluid">
     <div class="row">
         <h4>Examples</h4>
@@ -21,6 +29,7 @@
     </div>
 </div>
 
+<!-- Buttons -->
 <div class="lesson-group container-fluid">
     <div class="row">
         <a 
@@ -36,4 +45,8 @@
         >Back to my profile</a>
     </div>
 </div>
+{% endblock %}
+
+{% block endbody %}
+<script src="{% static 'lib/view.js' %}"></script>
 {% endblock %}
