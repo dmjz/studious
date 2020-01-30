@@ -11,15 +11,30 @@ from django.http import Http404
 def get_validated_lesson_data(request):
     """ From a request, raise Http404 or return validated lessonData """
 
+    examples = []
+    for k, v in request.POST.items():
+        if 'question' in k:
+            qid = k.split('-')[-1]
+            question = v
+            answer = request.POST.get(f'answer-{ qid }')
+            if answer:
+                examples.append((question, answer))
+                
     lessonData = {
         'title':    request.POST.get('titleFormInput'),
         'lesson':   request.POST.get('fullLessonFormTextarea'),
-        'examples': request.POST.get('examplesFormTextarea'),
+        'examples': examples,
     }
-    for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 2000)):
+    
+    for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 500)):
         if not lessonData.get(field):
             raise Http404(f'The required lesson field { field } is missing or empty.')
-        if len(lessonData[field]) > maxLength:
+        if field == 'examples':
+            examples = lessonData[field]
+            for i, (q, a) in enumerate(examples):
+                if len(q) > maxLength or len(a) > maxLength:
+                    raise Http404(f'Sorry, review question { i } is too long. The max length is { maxLength } characters.')        
+        elif len(lessonData[field]) > maxLength:
             raise Http404(f'Sorry, the { field } section is too long! The max length is { maxLength } characters.')
     return lessonData
 
