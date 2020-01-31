@@ -13,7 +13,8 @@ def get_validated_lesson_data(request):
 
     examples = []
     for k, v in request.POST.items():
-        if 'question' in k:
+        # Only use non-empty questions and answers
+        if 'question' in k and v:
             qid = k.split('-')[-1]
             question = v
             answer = request.POST.get(f'answer-{ qid }')

@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+
     // Title writer
     var titleSourceElement  = $("#titleFormInput"),
         titleDestElement    = $("#title-target");
@@ -8,7 +9,7 @@ $( document ).ready(function() {
         titleDestElement.text(titleText);
     };
     titleSourceElement.keyup(updateTitle);
-    updateTitle()
+    updateTitle();
 
     // Markdown conversion
     var markdownSourceElement   = $("#fullLessonFormTextarea"),
@@ -29,4 +30,34 @@ $( document ).ready(function() {
     };
     markdownSourceElement.keyup(convertMarkdown);
     convertMarkdown();
+
+    // Examples writer
+    //
+    // Note: hard-coded max of 10 review questions will be read here
+    // This can be easily extended by just increasing the max to N
+    // where N = max review questions per lesson.
+    //
+    var examplesSourceElement   = $("#review-group"),
+        examplesDestElement     = $("#examples-target");
+    parseExamples = function() {
+        examplesTexts = [];
+        for (let i = 0; i < 10; i++) {
+            var q   = $("#question-" + String(i)).val(),
+                a   = $("#answer-" + String(i)).val();
+            if (q || a) { examplesTexts.push({'q': q, 'a': a}); }
+        }
+        console.log(examplesTexts)
+        s = ""
+        for (let i = 0; i < examplesTexts.length; i++) {
+            ex = examplesTexts[i]
+            s += "<p><em>Q: </em>" + ex['q'] + "  -- <em>A: </em>" + ex['a'] + "</p>\n";
+        }
+        return s;
+    };
+    updateExamples = function(e) {
+        examplesHtml = parseExamples();
+        examplesDestElement.html(examplesHtml);
+    };
+    examplesSourceElement.keyup(updateExamples);
+    updateExamples();
 });

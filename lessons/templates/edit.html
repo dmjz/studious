@@ -41,11 +41,12 @@
 
             <label for="review-group">Review Questions</label>
             <div id="review-group" class="form-group">
+                {% for i in '01234'|make_list %}
                 <div class="form-row mb-2">
                     <div class="col-sm-8">
                         <input 
-                            id="question-1" 
-                            name="question-1" 
+                            id="question-{{ i }}" 
+                            name="question-{{ i }}" 
                             type="text" 
                             class="form-control" 
                             placeholder="Question"
@@ -53,54 +54,15 @@
                     </div>
                     <div class="col-sm-4">
                         <input 
-                            id="answer-1"
-                            name="answer-1" 
+                            id="answer-{{ i }}"
+                            name="answer-{{ i }}" 
                             type="text" 
                             class="form-control" 
                             placeholder="Answer"
                         >
                     </div>
                 </div>
-                <div class="form-row mb-2">
-                    <div class="col-sm-8">
-                        <input 
-                            id="question-2" 
-                            name="question-2" 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Question"
-                        >
-                    </div>
-                    <div class="col-sm-4">
-                        <input 
-                            id="answer-2" 
-                            name="answer-2" 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Answer"
-                        >
-                    </div>
-                </div>
-                <div class="form-row mb-2">
-                    <div class="col-sm-8">
-                        <input 
-                            id="question-3"
-                            name="question-3" 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Question"
-                        >
-                    </div>
-                    <div class="col-sm-4">
-                        <input 
-                            id="answer-3"
-                            name="answer-3" 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Answer"
-                        >
-                    </div>
-                </div>
+                {% endfor %}
             </div>
 
             <!-- Edit-related buttons -->
@@ -114,9 +76,9 @@
 
     <div class="col-sm-6">
         <!-- Containers to for text, HTML parsed from edit form -->
-        <h4 name="title-target" class="display-4"></h4>
-        <div id="preview-target" class="container-fluid color-2">
-        </div>
+        <h4 id="title-target" class="display-4"></h4>
+        <div id="preview-target" class="container-fluid color-2"></div>
+        <div id="examples-target" class="container-fluid color-2"></div>
     </div>
 </div>
 {% endblock %}
