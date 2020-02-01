@@ -2,11 +2,11 @@ $( document ).ready(function() {
 
     function escapeHtml(text) {
         return text
-            .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")
             .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(/'/g, "&#039;")
+            .replace(/&/g, "&amp;");
     }
 
     // Title writer
@@ -23,9 +23,7 @@ $( document ).ready(function() {
     // Markdown conversion
     var markdownSourceElement   = $("#fullLessonFormTextarea"),
         markdownDestElement     = $("#preview-target"),
-        converter               = new showdown.Converter();
-    converter.setFlavor('github')
-
+        converter               = window.markdownit();
     convertMarkdown = function(e) {
         if (markdownSourceElement.is("textarea")) {
             markdownText = markdownSourceElement.val();
@@ -34,7 +32,7 @@ $( document ).ready(function() {
         } else {
             throw "Expected a div or textarea as markdwonSourceElement";
         }
-        convertedHtml = converter.makeHtml(markdownText);
+        convertedHtml = converter.render(markdownText);
         markdownDestElement.html(convertedHtml);
     };
     markdownSourceElement.keyup(convertMarkdown);
@@ -52,26 +50,30 @@ $( document ).ready(function() {
             if (q || a) { 
                 examplesTexts.push(
                     {
-                        'question': escapeHtml(q), 
-                        'answer': escapeHtml(a)
+                        'question': q,
+                        'answer': a
                     }
                 );
             }
         }
-        s = ""
-        for (let i = 0; i < examplesTexts.length; i++) {
-            ex = examplesTexts[i]
-            s += '<div class="row"><div class="col-sm-4"> \
-            <p class="lead"><strong>Q: </strong>' + ex['question'] + '</p> \
-            </div><div class="col-sm-4"> \
-            <p class="lead"><strong>A: </strong>' + ex['answer'] + '</p> \
-            </div></div>'
-        }
-        return s;
+        return examplesTexts;
     };
     updateExamples = function(e) {
         examplesHtml = parseExamples();
-        examplesDestElement.html(examplesHtml);
+        examplesDestElement.html('');
+        for (let i = 0; i < examplesTexts.length; i++) {
+            ex = examplesTexts[i];
+            examplesDestElement.append(
+                '<div class="row"><div class="col-sm-4"> \
+                <p class="lead"><strong>Q: </strong><span id="q-text-' + String(i) + '"</p> \
+                </div><div class="col-sm-4"> \
+                <p class="lead"><strong>A: </strong><span id="a-text-' + String(i) + '"</p> \
+                </div></div>'
+            );
+            $("#q-text-" + String(i)).text(ex['question']);
+            $("#a-text-" + String(i)).text(ex['answer']);
+        }
+        //examplesDestElement.html(examplesHtml);
     };
     examplesSourceElement.keyup(updateExamples);
     updateExamples();

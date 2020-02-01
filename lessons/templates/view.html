@@ -5,7 +5,7 @@
 
 {% block head %}
 <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"
+    src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"
     crossorigin="anonymous">
 </script>
 {% endblock %}
@@ -18,7 +18,7 @@
 <!-- Processed lesson content -->
 <h1 class="display-3">{{ lesson.title }}</h1>
 <div id="lesson-body" class="lesson-group container color-2"></div>
-<h4 class="display-4">Examples</h4>
+<h4 class="display-4">Review questions</h4>
 <div class="lesson-group container color-2">
 {% for ex in lesson.examples %}
     <div class="row">

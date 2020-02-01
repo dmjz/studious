@@ -84,6 +84,10 @@ def edit(request, lesson_id):
         return redirect('view', lesson_id=lesson_id)
     else:
         lessonData = read_lesson_data(lesson)
+        # Ensure at least 5 review q/a's for the template to show
+        numShort = 5 - len(lessonData['examples'])
+        if numShort > 0:
+            lessonData['examples'] += [{'question': '', 'answer': ''}] * numShort
         return render(
             request, 
             'edit.html', 
