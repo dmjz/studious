@@ -19,7 +19,7 @@ def get_validated_lesson_data(request):
             question = v
             answer = request.POST.get(f'answer-{ qid }')
             if answer:
-                examples.append((question, answer))
+                examples.append({'question': question, 'answer': answer})
                 
     lessonData = {
         'title':    request.POST.get('titleFormInput'),
@@ -32,8 +32,8 @@ def get_validated_lesson_data(request):
             raise Http404(f'The required lesson field { field } is missing or empty.')
         if field == 'examples':
             examples = lessonData[field]
-            for i, (q, a) in enumerate(examples):
-                if len(q) > maxLength or len(a) > maxLength:
+            for i, ex in enumerate(examples):
+                if len(ex['question']) > maxLength or len(ex['answer']) > maxLength:
                     raise Http404(f'Sorry, review question { i } is too long. The max length is { maxLength } characters.')        
         elif len(lessonData[field]) > maxLength:
             raise Http404(f'Sorry, the { field } section is too long! The max length is { maxLength } characters.')

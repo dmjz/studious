@@ -1,5 +1,14 @@
 $( document ).ready(function() {
 
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
     // Title writer
     var titleSourceElement  = $("#titleFormInput"),
         titleDestElement    = $("#title-target");
@@ -32,25 +41,31 @@ $( document ).ready(function() {
     convertMarkdown();
 
     // Examples writer
-    //
-    // Note: hard-coded max of 10 review questions will be read here
-    // This can be easily extended by just increasing the max to N
-    // where N = max review questions per lesson.
-    //
     var examplesSourceElement   = $("#review-group"),
         examplesDestElement     = $("#examples-target");
     parseExamples = function() {
         examplesTexts = [];
+        //// Note: hard-coded max 10 examples read here
         for (let i = 0; i < 10; i++) {
             var q   = $("#question-" + String(i)).val(),
                 a   = $("#answer-" + String(i)).val();
-            if (q || a) { examplesTexts.push({'q': q, 'a': a}); }
+            if (q || a) { 
+                examplesTexts.push(
+                    {
+                        'question': escapeHtml(q), 
+                        'answer': escapeHtml(a)
+                    }
+                );
+            }
         }
-        console.log(examplesTexts)
         s = ""
         for (let i = 0; i < examplesTexts.length; i++) {
             ex = examplesTexts[i]
-            s += "<p><em>Q: </em>" + ex['q'] + "  -- <em>A: </em>" + ex['a'] + "</p>\n";
+            s += '<div class="row"><div class="col-sm-4"> \
+            <p class="lead"><strong>Q: </strong>' + ex['question'] + '</p> \
+            </div><div class="col-sm-4"> \
+            <p class="lead"><strong>A: </strong>' + ex['answer'] + '</p> \
+            </div></div>'
         }
         return s;
     };

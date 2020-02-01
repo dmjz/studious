@@ -11,22 +11,25 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="display-4">{{ lesson.title }}</h1>
 
-<!-- Hidden div to hold lesson text -->
+<!-- Hidden divs to hold raw lesson content -->
 <textarea id="lesson-body-source" class="invisible d-none">{{ lesson.lesson }}</textarea>
 
-<!-- Div to hold HTML converted from Markdown lesson text -->
-<div id="lesson-body" class="lesson-group container-fluid"></div>
-
-<!-- Examples -->
-<div class="lesson-group container-fluid">
+<!-- Processed lesson content -->
+<h1 class="display-3">{{ lesson.title }}</h1>
+<div id="lesson-body" class="lesson-group container color-2"></div>
+<h4 class="display-4">Examples</h4>
+<div class="lesson-group container color-2">
+{% for ex in lesson.examples %}
     <div class="row">
-        <h4>Examples</h4>
+        <div class="col-sm-4">
+            <p class="lead"><strong>Q: </strong>{{ ex.question }}</p>
+        </div>
+        <div class="col-sm-4">
+            <p class="lead"><strong>A: </strong>{{ ex.answer }}</p>
+        </div>
     </div>
-    <div class="row white-space-pre">
-        <p>{{ lesson.examples }}</p>
-    </div>
+{% endfor %}
 </div>
 
 <!-- Buttons -->
