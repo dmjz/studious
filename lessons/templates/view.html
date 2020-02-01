@@ -17,9 +17,9 @@
 
 <!-- Processed lesson content -->
 <h1 class="display-3">{{ lesson.title }}</h1>
-<div id="lesson-body" class="lesson-group container color-2"></div>
+<div id="lesson-body" class="lesson-group my-4 container color-2"></div>
 <h4 class="display-4">Review questions</h4>
-<div class="lesson-group container color-2">
+<div class="lesson-group container my-2 color-2">
 {% for ex in lesson.examples %}
     <div class="row">
         <div class="col-sm-4">
@@ -33,7 +33,7 @@
 </div>
 
 <!-- Buttons -->
-<div class="lesson-group container-fluid">
+<div class="lesson-group my-4 container-fluid">
     <div class="row">
         <a 
             class="btn btn-primary" 
