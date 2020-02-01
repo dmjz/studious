@@ -7,6 +7,20 @@ from django.core.files.base import ContentFile
 import json
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+import string
+import random
+
+def random_string(length):
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+
+def get_new_lesson_data():
+    """ Return an empty lesson (for new lesson creation) """
+
+    return  {
+        'title':    f'New lesson (#{ random_string(8) })',
+        'lesson':   '',
+        'examples': [],
+    }
 
 def get_validated_lesson_data(request):
     """ From a request, raise Http404 or return validated lessonData """
@@ -28,15 +42,15 @@ def get_validated_lesson_data(request):
     }
     
     for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 500)):
-        if not lessonData.get(field):
-            raise Http404(f'The required lesson field { field } is missing or empty.')
+        if lessonData.get(field) is None:
+            raise Http404(f'The required lesson field "{ field }" is missing')
         if field == 'examples':
             examples = lessonData[field]
             for i, ex in enumerate(examples):
                 if len(ex['question']) > maxLength or len(ex['answer']) > maxLength:
                     raise Http404(f'Sorry, review question { i } is too long. The max length is { maxLength } characters.')        
         elif len(lessonData[field]) > maxLength:
-            raise Http404(f'Sorry, the { field } section is too long! The max length is { maxLength } characters.')
+            raise Http404(f'Sorry, the { field } section is too long. The max length is { maxLength } characters.')
     return lessonData
 
 def read_lesson_data(lesson):
@@ -47,25 +61,21 @@ def read_lesson_data(lesson):
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def new(request):
-    if request.method == 'POST':
-        # Create and save new lesson
-        lessonData = get_validated_lesson_data(request)
-        lesson = Lesson(
-            owner   = request.user,
-            title   = lessonData['title'],
-            created = timezone.now(), 
-            file    = ContentFile(
-                json.dumps(lessonData).encode('utf-8'), 
-                name='dummy_name'
-            ),
-        )
-        if lesson:
-            lesson.save()
-            return redirect('profile')
-        if not lesson:
-            raise Http404('For an unknown reason, we failed to save the lesson. Sorry!')
-    else:
-        return render(request, 'new.html')
+    lessonData = get_new_lesson_data();
+    lesson = Lesson(
+        owner   = request.user,
+        title   = lessonData['title'],
+        created = timezone.now(), 
+        file    = ContentFile(
+            json.dumps(lessonData).encode('utf-8'), 
+            name='dummy_name'
+        ),
+    )
+    if lesson:
+        lesson.save()
+        return redirect('edit', lesson_id=lesson.id)
+    if not lesson:
+        raise Http404('For an unknown reason, we failed to save the lesson. Sorry!')
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def edit(request, lesson_id):
