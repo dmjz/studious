@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from lessons.models import Lesson
 from django.utils import timezone
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.files.base import ContentFile
-import json
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from lessons.models import Lesson
+import json
 import string
 import random
 

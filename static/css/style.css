@@ -23,5 +23,12 @@
     background-color: #9d2f2f;
 }
 
+/* Basically Bootstrap's disabled class, but doesn't fade colors */
+.custom-a-disabled {
+    cursor: default; 
+    text-decoration: none; 
+    pointer-events: none;
+}
+
 /* To fix navbar overlap */
 body { padding-top: 80px; }
