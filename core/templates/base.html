@@ -20,6 +20,7 @@
 
 <body class="color-1">
 
+    {% block navbar %}
     <nav class="navbar fixed-top navbar-expand-lg navbar-light color-2">
         <a class="navbar-brand" href="{% url 'home' %}">
             <img src="{% static 'images/logo.png' %}">
@@ -48,6 +49,7 @@
             </ul>
         </div>
     </nav>
+    {% endblock %}
 
     <div class="container">
         {% block content %}

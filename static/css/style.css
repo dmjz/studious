@@ -23,6 +23,22 @@
     background-color: #9d2f2f;
 }
 
+.review-exit-btn {
+    background-color: #c94c4c;
+    color: white !important;
+}
+.review-exit-btn:hover {
+    background-color: #9d2f2f;
+}
+
+.review-submit-btn {
+    background-color: #66ff66;
+    color: black !important;
+}
+.review-submit-btn:hover {
+    background-color: #00ff00;
+}
+
 /* Basically Bootstrap's disabled class, but doesn't fade colors */
 .custom-a-disabled {
     cursor: default; 

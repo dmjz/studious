@@ -3,8 +3,29 @@
 
 {% block title %}Studious - Review{% endblock %}
 
+<!-- Custom navbar for the review page -->
+{% block navbar %}
+<nav class="navbar fixed-top navbar-expand navbar-light color-2">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link btn btn-lg review-exit-btn shadow-sm" href="{% url 'profile' %}">Exit</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endblock %}
+
 {% block content %}
-<div class="m-4 p-4 shadow-sm rounded-sm color-2">
-    <h1 class="display-6 mb-4">Review stuff will go here :^)</h1>
+<div class="m-4 p-4 shadow-sm rounded-sm color-2 text-center">
+    <h4 class="display-4" id="question-text">Loading reviews...</h4>
+    <form class="form-inline justify-content-center mt-5">
+        <input type="text" class="form-control mb-2 mr-sm-2" id="answer-input" name="answer-input" placeholder="Your answer">
+        <button type="submit" class="btn review-submit-btn shadow-sm mb-2">Go</button>
+    </form>
+</div>
+
+<div class="m-4 p-4 shadow-sm rounded-sm color-2 text-center">
+    <button type="button" class="btn btn-outline-dark btn-block" disabled>Lesson details</button>
 </div>
 {% endblock %}
