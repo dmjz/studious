@@ -5,6 +5,7 @@ from django.urls import Resolver404
 from .forms import SignupForm
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from lessons.models import Lesson
 
 def home(request):
@@ -17,7 +18,20 @@ def logout_view(request):
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def profile(request):
     lessons = Lesson.objects.filter(owner=request.user.id)
-    return render(request, 'profile.html', {'lessons': lessons})
+    now = timezone.now()
+    numReviews = 0
+    for lesson in lessons:
+        if lesson.next_review_time and lesson.next_review_time <= now:
+            numReviews += 1
+    return render(
+        request, 
+        'profile.html', 
+        {
+            'lessons': lessons,
+            'now': now,
+            'numReviews': numReviews,
+        },
+    )
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def password_change(request):
