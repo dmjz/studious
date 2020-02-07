@@ -31,5 +31,9 @@
 {% endblock %}
 
 {% block endbody %}
+<script>
+    AVAILABLE_REVIEWS_URL = '{% url 'available' %}';
+    CSRF_TOKEN = '{{ csrf_token }}';
+</script>
 <script src="{% static 'lib/review.js' %}"></script>
 {% endblock %}

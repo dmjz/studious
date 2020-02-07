@@ -1,10 +1,10 @@
 $( document ).ready(function() {
 
-    console.log('sup bitch')
-
     // Get review data
     $.ajax({
-        url: 'localhost:8000/review/available',
+        headers: { "X-CSRFToken": CSRF_TOKEN },
+        url: AVAILABLE_REVIEWS_URL,
+        method: 'GET',
         success: function(data) {
             console.log('success');
             console.log(data);
