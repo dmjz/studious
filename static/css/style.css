@@ -20,6 +20,14 @@
     background-color: #dab3ff;
 }
 
+.color-correct {
+    background-color: #8cff66;
+}
+
+.color-incorrect {
+    background-color: #ff4d4d;
+}
+
 .a-btn {
     text-decoration: none !important;
 }

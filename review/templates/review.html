@@ -17,9 +17,10 @@
 {% endblock %}
 
 {% block content %}
-<div class="m-4 p-4 shadow-sm rounded-sm color-2 text-center">
+<div id="main-div" class="m-4 p-4 shadow-sm rounded-sm color-2 text-center">
     <h4 class="display-4" id="question-text">Loading reviews...</h4>
-    <form class="form-inline justify-content-center mt-5">
+    <p id="correct-answer" class="ghost lead"></p>
+    <form id="answer-form" class="form-inline justify-content-center mt-5">
         <input type="text" class="form-control mb-2 mr-sm-2" id="answer-input" name="answer-input" placeholder="Your answer">
         <button type="button" id='submit-answer-btn' class="btn review-submit-btn shadow-sm mb-2">Go</button>
     </form>
@@ -27,6 +28,9 @@
 
 <div class="m-4 p-4 shadow-sm rounded-sm color-2 text-center">
     <button type="button" id="lesson-btn" class="btn btn-outline-dark btn-block" disabled>Lesson details</button>
+</div>
+
+<div id="lesson-div" class="m-4 p-4 shadow-sm rounded-sm color-2 text-center ghost">
 </div>
 {% endblock %}
 
