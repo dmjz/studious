@@ -14,8 +14,18 @@
         <a class="btn btn-outline-dark custom-a-disabled" role="button">{{ numReviews }}</a>
         {% if numReviews > 0 %}
             <a class="btn btn-primary" href="{% url 'review' %}" role="button">Review now</a>
+        {% elif hasReviews %}
+            <a 
+                class="btn btn-primary disabled" 
+                href="{% url 'review' %}" 
+                role="button"
+                >Time to next review: {{ nextReviewTime|timeuntil }}</a>
         {% else %}
-            <a class="btn btn-primary disabled" href="{% url 'review' %}" role="button">No reviews available</a>
+            <a 
+                class="btn btn-primary disabled" 
+                href="{% url 'review' %}" 
+                role="button"
+                >No reviews available</a>
         {% endif %}
     </div>
 </div>

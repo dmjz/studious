@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from lessons.models import Lesson
+from datetime import timedelta, datetime
 
 def home(request):
     return render(request, 'home.html')
@@ -20,9 +21,16 @@ def profile(request):
     lessons = Lesson.objects.filter(owner=request.user.id)
     now = timezone.now()
     numReviews = 0
+    minTime = now + timedelta(days=365)
+    hasReviews = False
     for lesson in lessons:
-        if lesson.next_review_time and lesson.next_review_time <= now:
-            numReviews += 1
+        if lesson.next_review_time:
+            hasReviews = True
+            if lesson.next_review_time <= now:
+                numReviews += 1
+            elif lesson.next_review_time < minTime:
+                minTime = lesson.next_review_time
+
     return render(
         request, 
         'profile.html', 
@@ -30,6 +38,8 @@ def profile(request):
             'lessons': lessons,
             'now': now,
             'numReviews': numReviews,
+            'hasReviews': hasReviews,
+            'nextReviewTime': minTime,
         },
     )
 
