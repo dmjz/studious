@@ -12,6 +12,9 @@ $( document ).ready(function() {
         method: 'GET',
         success: function(data) {
 
+            // Redirect if no reviews
+            if (data['reviews'].length == 0) { window.location.replace(PROFILE_URL); }
+
             // Page elements
             var questionH4   = $('#question-text'),
                 answerInput  = $('#answer-input'),
@@ -20,7 +23,7 @@ $( document ).ready(function() {
                 mainDiv      = $('#main-div'),
                 correctSpan  = $('#correct-answer');
 
-            // Send Enter keypress on form to submitButton click
+            // Reroute Enter keypress on form to submitButton click
             $("#answer-form").keydown(function(e) {
                 if (e.keyCode == 13) { e.preventDefault(); submitButton.click(); return false; }
             });
@@ -69,22 +72,6 @@ $( document ).ready(function() {
             }
             questionH4.text(reviews[0]['chosen_qna']['question']);
 
-            lessonButton.click(function() {
-                //
-                // TODO: display real lesson details here
-                //
-                var lessonDiv = $('#lesson-div');
-                if (lessonDiv.hasClass('ghost')) {
-                    console.log('Show lesson div');
-                    lessonDiv.removeClass('ghost');
-                    lessonDiv.html('<p>Placeholder for real lesson details here</p>');
-                } else {
-                    console.log('Show lesson div');
-                    lessonDiv.html('');
-                    lessonDiv.addClass('ghost');
-                }
-            });
-
             var get_current_review_values = function() {
                 var currentReview = reviews[pageState['review_index']];
                 return {
@@ -105,6 +92,45 @@ $( document ).ready(function() {
                     if (!reviews[i]['is_done']) { return i; }
                 }
                 return -1;
+            };
+
+            var lessonButtonClick = function(e) {
+                /* Hide/show lesson details */
+                e.preventDefault();
+                if (!pageState['details_enabled']) { return false; }
+                var lessonDiv = $('#lesson-div');
+                if (lessonDiv.hasClass('d-none')) {
+                    lessonDiv.removeClass('d-none');
+                    //
+                    // TODO: display real lesson details here
+                    //
+                    lessonDiv.html('<p>This feature coming soon :^)</p>');
+                } else {
+                    lessonDiv.addClass('d-none');
+                    lessonDiv.html('');
+                }
+            };
+
+            var postReviews = function(isExit) {
+                /* POST reviews to the server to save progress in database */
+                $.ajax({
+                    headers: { "X-CSRFToken": CSRF_TOKEN },
+                    url: SAVE_REVIEWS_URL,
+                    method: 'POST',
+                    data: {'reviews': JSON.stringify(reviews)},
+                    dataType: 'json',
+                    isExit: isExit,
+                    success: function(data) {
+                        if (!isExit) { window.location.replace(window.location.origin + data['redirect']); }
+                    },
+                    error: function(err) {
+                        console.log('Error: ');
+                        console.log(err);
+                    }
+                });
+
+                // Now overwrite this function so you can only call it once
+                postReviews = function(isExit) { return false; }
             };
 
             var colorClasses = ['color-2', 'color-correct', 'color-incorrect'];
@@ -129,12 +155,16 @@ $( document ).ready(function() {
                     },
                 'enable_details': 
                     function() { 
-                        lessonButton.prop("disabled", false);
+                        lessonButton.removeClass('disabled');
+                        lessonButton.click(lessonButtonClick);
                         pageState['details_enabled'] = true; 
                     },
                 'disable_details': 
                     function() { 
-                        lessonButton.prop("disabled", true);
+                        lessonButton.addClass('disabled');
+                        lessonButton.off('click');
+                        $('#lesson-div').html('');
+                        $('#lesson-div').addClass('d-none');
                         pageState['details_enabled'] = false;
                     },
                 'update_review': 
@@ -151,6 +181,11 @@ $( document ).ready(function() {
                         if (text === '') { questionH4.text(get_current_review_values()['question']); }
                         else { questionH4.text(text); }
                     },
+                'clear_answer_input':
+                    function() {
+                        answerInput.val('');
+                        answerInput.focus();
+                    }
             }
 
             var correct_actions = function() {
@@ -159,6 +194,7 @@ $( document ).ready(function() {
                 pageState['answer_submitted'] = true;
                 pageActions['set_color_class']('color-correct');
                 pageActions['update_review'](isCorrect);
+                pageActions['enable_details']();
             };
 
             var incorrect_actions = function() {
@@ -168,6 +204,7 @@ $( document ).ready(function() {
                 pageActions['set_color_class']('color-incorrect');
                 pageActions['show_answer']();
                 pageActions['update_review'](isCorrect);
+                pageActions['enable_details']();
             };
 
             var next_actions = function() {
@@ -176,23 +213,22 @@ $( document ).ready(function() {
                 if (pageState['review_index'] < 0) { 
                     // Submit results to the server for processing and redirection
                     submitButton.off('click');
-                    submitButton.prop('disabled', false);
                     pageActions['update_question']('Done! Processing your reviews...');
-                    //
-                    // TODO: submit stuff to server now
-                    //
+                    postReviews();
                 } else {
                     // Update page with next review question stuff
                     pageActions['update_question']();
                     pageActions['set_color_class']('color-2');
                     pageActions['hide_answer']();
                     pageActions['disable_details']();
+                    pageActions['clear_answer_input']();
                     pageState['answer_submitted'] = false;
                 }
             };
 
             // Hook up submit button functionality
-            submitButton.click(function() {
+            submitButton.click(function(e) {
+                e.preventDefault();
                 if (pageState['answer_submitted']) {
                     console.log('Next review');
                     next_actions();
@@ -211,11 +247,19 @@ $( document ).ready(function() {
                 console.log('Page state:');
                 console.log(pageState);
             });
+
+            // Before exiting, send server your review progress for processing
+            $( window ).on('beforeunload', function() { 
+                console.log('sup bruh');
+                console.log(reviews);
+                postReviews(isExit=true); 
+            });
         },
         failure: function(data) {
 
             // Show error message
-            console.log('Failed to load reviews. What a disappointment'); 
+            console.log('Failed to load reviews. What a disappointment!'); 
+            window.location.redirect(PROFILE_URL);
         }
     });
 

@@ -27,16 +27,18 @@
 </div>
 
 <div class="m-4 p-4 shadow-sm rounded-sm color-2 text-center">
-    <button type="button" id="lesson-btn" class="btn btn-outline-dark btn-block" disabled>Lesson details</button>
+    <button type="button" id="lesson-btn" class="btn btn-secondary btn-block disabled">Lesson details</button>
 </div>
 
-<div id="lesson-div" class="m-4 p-4 shadow-sm rounded-sm color-2 text-center ghost">
+<div id="lesson-div" class="m-4 p-4 shadow-sm rounded-sm color-2 text-center d-none">
 </div>
 {% endblock %}
 
 {% block endbody %}
 <script>
     AVAILABLE_REVIEWS_URL = '{% url 'available' %}';
+    SAVE_REVIEWS_URL = '{% url 'save_progress' %}';
+    PROFILE_URL = '{% url 'profile' %}';
     CSRF_TOKEN = '{{ csrf_token }}';
 </script>
 <script src="{% static 'lib/review.js' %}"></script>

@@ -3,9 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, JsonResponse
 from django.utils import timezone
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
+from django.urls import reverse
 from datetime import timedelta
 from lessons.models import Lesson
-from lessons.utils import get_review_QnAs
+from lessons.utils import get_review_QnAs, update_review_fields
+import json
 
 def round_hour(dt):
     """ Round datetime to nearest hour """
@@ -40,4 +43,26 @@ def available(request):
             for lesson in lessons
             if lesson.next_review_time and lesson.next_review_time <= now
         ]
+    })
+
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
+def save_progress(request):
+    if request.method != 'POST':
+        return redirect('profile')
+    if not request.POST.get('reviews'):
+        raise KeyError('Expected "reviews" in POST data')
+    reviews = json.loads(request.POST.get('reviews'))
+    for review in reviews:
+        lesson = get_object_or_404(Lesson, pk=review['lesson_id'])
+        if lesson.owner != request.user:
+            raise PermissionDenied('You don\'t have permission to modify this lesson\'s review status.')
+        if review['is_done']:
+            if review['was_ever_incorrect']:
+                update_review_fields(lesson, isCorrect=False)
+            else: 
+                update_review_fields(lesson, isCorrect=True)
+    return JsonResponse({
+        'status': 200, 
+        'statusText': 'OK',
+        'redirect': reverse('profile'),
     })
