@@ -13,7 +13,7 @@ from lessons.utils import get_new_lesson_data, get_validated_lesson_data, read_l
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def new(request):
-    lessonData = get_new_lesson_data();
+    lessonData = get_validated_lesson_data(get_new_lesson_data());
     lesson = Lesson(
         owner   = request.user,
         title   = lessonData['title'],

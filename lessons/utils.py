@@ -2,6 +2,7 @@ from django.http import Http404
 from django.utils import timezone
 from django.db import DataError
 from lessons.models import Lesson
+from lessons.newlessontext import newLessonText
 import json
 import string
 import random
@@ -25,34 +26,46 @@ def get_new_lesson_data():
 
     return  {
         'title':    f'New lesson (#{ random_string(8) })',
-        'lesson':   '',
-        'examples': [],
+        'lesson':   newLessonText,
+        'examples': [{'question': 'question 1', 'answer': 'answer 1'}],
     }
 
-def get_validated_lesson_data(request):
-    """ From a request, raise Http404 or return validated lessonData """
+def get_validated_lesson_data(request_or_dict):
+    """ From a request, raise Http404 or return validated lessonData 
+        (can also pass dict of lesson data)
+    """
 
-    examples = []
-    for k, v in request.POST.items():
-        # Only use non-empty questions and answers
-        if 'question' in k and v:
-            qid = k.split('-')[-1]
-            question = v
-            answer = request.POST.get(f'answer-{ qid }')
-            if answer:
-                examples.append({'question': question, 'answer': answer})
-                
-    lessonData = {
-        'title':    request.POST.get('titleFormInput'),
-        'lesson':   request.POST.get('fullLessonFormTextarea'),
-        'examples': examples,
-    }
+    try:
+        data = request_or_dict.POST
+    except AttributeError:
+        lessonData = {
+            'title':    request_or_dict.get('title'),
+            'lesson':   request_or_dict.get('lesson'),
+            'examples': request_or_dict.get('examples'),
+        }
+    else:
+        examples = []
+        for k, v in data.items():
+            # Only use non-empty questions and answers
+            if 'question' in k and v:
+                qid = k.split('-')[-1]
+                question = v
+                answer = data.get(f'answer-{ qid }')
+                if answer:
+                    examples.append({'question': question, 'answer': answer})
+        lessonData = {
+            'title':    data.get('titleFormInput'),
+            'lesson':   data.get('fullLessonFormTextarea'),
+            'examples': examples,
+        }
     
     for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 500)):
         if lessonData.get(field) is None:
             raise Http404(f'The required lesson field "{ field }" is missing')
         if field == 'examples':
             examples = lessonData[field]
+            if not examples:
+                raise Http404('You must have at least one nonempty question-answer pair')
             for i, ex in enumerate(examples):
                 if len(ex['question']) > maxLength or len(ex['answer']) > maxLength:
                     raise Http404(f'Sorry, review question { i } is too long. The max length is { maxLength } characters.')        
