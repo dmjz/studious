@@ -23,8 +23,9 @@ $( document ).ready(function() {
     // Markdown conversion
     var markdownSourceElement   = $("#fullLessonFormTextarea"),
         markdownDestElement     = $("#preview-target"),
-        converter               = window.markdownit();
+        converter               = window.markdownit({ html: false, typographer: true });
     convertMarkdown = function(e) {
+        // Insert the HTML
         if (markdownSourceElement.is("textarea")) {
             markdownText = markdownSourceElement.val();
         } else if (markdownSourceElement.is("div")) {
@@ -34,6 +35,16 @@ $( document ).ready(function() {
         }
         convertedHtml = converter.render(markdownText);
         markdownDestElement.html(convertedHtml);
+
+        // Fix the HTML
+        markdownDestElement.find("blockquote").addClass("blockquote");
+        markdownDestElement.find("code").addClass("code"); // needed for inline code
+        markdownDestElement.find("code").each(function(index) {
+            // attach code format to code parent pre's
+            console.log(index); console.log(';'); console.log(parent);
+            parent = $(this).parent()
+            if (parent.is("pre")) { parent.addClass('code'); }
+        });
     };
     markdownSourceElement.keyup(convertMarkdown);
     convertMarkdown();
@@ -48,12 +59,7 @@ $( document ).ready(function() {
             var q   = $("#question-" + String(i)).val(),
                 a   = $("#answer-" + String(i)).val();
             if (q || a) { 
-                examplesTexts.push(
-                    {
-                        'question': q,
-                        'answer': a
-                    }
-                );
+                examplesTexts.push({ 'question': q, 'answer': a });
             }
         }
         return examplesTexts;
