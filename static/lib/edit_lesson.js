@@ -21,33 +21,11 @@ $( document ).ready(function() {
     updateTitle();
 
     // Markdown conversion
-    var markdownSourceElement   = $("#fullLessonFormTextarea"),
-        markdownDestElement     = $("#preview-target"),
-        converter               = window.markdownit({ html: false, typographer: true });
-    convertMarkdown = function(e) {
-        // Insert the HTML
-        if (markdownSourceElement.is("textarea")) {
-            markdownText = markdownSourceElement.val();
-        } else if (markdownSourceElement.is("div")) {
-            markdownText = markdownSourceElement.text();
-        } else {
-            throw "Expected a div or textarea as markdwonSourceElement";
-        }
-        convertedHtml = converter.render(markdownText);
-        markdownDestElement.html(convertedHtml);
-
-        // Fix the HTML
-        markdownDestElement.find("blockquote").addClass("blockquote");
-        markdownDestElement.find("code").addClass("code"); // needed for inline code
-        markdownDestElement.find("code").each(function(index) {
-            // attach code format to code parent pre's
-            console.log(index); console.log(';'); console.log(parent);
-            parent = $(this).parent()
-            if (parent.is("pre")) { parent.addClass('code'); }
-        });
-    };
-    markdownSourceElement.keyup(convertMarkdown);
-    convertMarkdown();
+    var converter = new MarkdownConverter(
+        source      = $("#fullLessonFormTextarea"),
+        dest        = $("#preview-target"),
+        attachKeyup = true
+    );
 
     // Examples writer
     var examplesSourceElement   = $("#review-group"),
