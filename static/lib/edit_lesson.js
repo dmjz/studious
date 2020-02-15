@@ -58,7 +58,6 @@ $( document ).ready(function() {
     var editForm = $('#edit-form');
     previewDiv.height(editForm.height())
     var resize_preview = function() {
-        console.log('Resize');
         previewDiv.height( editForm.height() );
     };
     previewDiv.on('resize', resize_preview);
