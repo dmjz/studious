@@ -4,18 +4,24 @@
 {% block title %}Studious - Edit lesson{% endblock %}
 
 {% block head %}
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"
+<script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.js" 
+    integrity="sha256-uhsZv/1rhiqa0K9vDMZzGa5ZEFVECUsJ1yQ7qtShRlc=" 
+    crossorigin="anonymous">
+</script>
+<script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it-emoji/1.4.0/markdown-it-emoji.min.js" 
+    integrity="sha256-sCkD25+gPZ/B1/sRgCfgc/CRu11VuHttkcciyDZRJgs=" 
     crossorigin="anonymous">
 </script>
 {% endblock %}
 
 {% block content %}
-<div class="row mb-2">
+<div id="edit-row" class="row mb-2">
     <!-- New Lesson form with textarea to write Markdown -->
-    <div class="col-sm-6">
+    <div id="input-col" class="col-sm-6">
         <h1 class="display-4">Edit Lesson</h1>
-        <form method="POST" action="{% url 'edit' lesson_id=lesson_id %}">
+        <form id="edit-form" method="POST" action="{% url 'edit' lesson_id=lesson_id %}">
             {% csrf_token %}
             <div class="form-group">
                 <label for="titleFormInput">Title</label>
@@ -75,14 +81,14 @@
         </form>
     </div>
 
-    <div class="col-sm-6">
-        <!-- Containers to for text, HTML parsed from edit form -->
+    <div id="preview-col" class="col-sm-6">
+        <!-- Containers for text, HTML parsed from edit form -->
         <h4 id="title-target" class="display-4"></h4>
-        <div id="preview-container" class="container-fluid color-2">
-            <div id="preview-target" class="max-height">
+        <div id="preview-container" class="container-fluid overflow-auto color-2">
+            <div id="preview-target">
             </div>
         </div>
-        <div id="examples-target" class="container-fluid color-2"></div>
+        <div id="examples-target" class="container-fluid my-2 color-2"></div>
     </div>
 </div>
 {% endblock %}

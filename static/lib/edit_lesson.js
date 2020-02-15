@@ -1,14 +1,5 @@
 $( document ).ready(function() {
 
-    function escapeHtml(text) {
-        return text
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;")
-            .replace(/&/g, "&amp;");
-    }
-
     // Title writer
     var titleSourceElement  = $("#titleFormInput"),
         titleDestElement    = $("#title-target");
@@ -22,10 +13,10 @@ $( document ).ready(function() {
 
     // Markdown conversion
     var converter = new MarkdownConverter(
-        source      = $("#fullLessonFormTextarea"),
-        dest        = $("#preview-target"),
-        attachKeyup = true
+        sourceString    = "#fullLessonFormTextarea",
+        destString      = "#preview-target"
     );
+    converter.source().on('keyup', function () { converter.convert_and_insert(); })
 
     // Examples writer
     var examplesSourceElement   = $("#review-group"),
@@ -61,4 +52,16 @@ $( document ).ready(function() {
     };
     examplesSourceElement.keyup(updateExamples);
     updateExamples();
+
+    // Resize the lesson preview div when either it or the edit form are resized
+    var previewDiv = $('#preview-container');
+    var editForm = $('#edit-form');
+    previewDiv.height(editForm.height())
+    var resize_preview = function() {
+        console.log('Resize');
+        previewDiv.height( editForm.height() );
+    };
+    previewDiv.on('resize', resize_preview);
+    editForm.on('resize', resize_preview);
+
 });

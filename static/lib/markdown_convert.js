@@ -1,35 +1,39 @@
-
 class MarkdownConverter {
-    constructor(source, dest, attachKeyup=false, immediateConvert=true) {
-        this.source = source;
-        this.dest = dest;
-        this.converter = window.markdownit({ html: false, typographer: true });
-        if (attachKeyup) { this.source.keyup(this.convert_and_insert); }
+    constructor(sourceString, destString, immediateConvert=true) {
+        this.sourceString = sourceString;
+        this.destString = destString;
+        this.converter = window.markdownit({ html: false, typographer: true })
+            .use(window.markdownitEmoji);
         if (immediateConvert) { this.convert_and_insert(); }
     }
 
+    source() { return $(this.sourceString); }
+    dest()   { return $(this.destString); }
+
     source_text() {
-        if (this.source.is("textarea")) {
-            return this.source.val();
-        } else if (this.source.is("div")) {
-            return this.source.text();
-        } else {
-            throw "Expected a div or textarea as source element";
-        }
+        var source = this.source();
+        if (source.is("textarea")) { return source.val(); }
+        else if (source.is("div")) { return source.text(); }
+        else { throw "Expected a div or textarea as source element"; }
     }
 
     convert_and_insert() {
         // Get text, convert to HTML, insert
-        this.dest.html(this.converter.render(this.source_text()));
+        var dest = this.dest();
+        dest.html(this.converter.render(this.source_text()));
         // Fix some issues with the inserted HTML
         // -- Blockquotes
-        this.dest.find("blockquote").addClass("blockquote");
+        dest.find("blockquote").addClass("blockquote");
         // -- Inline code
-        this.dest.find("code").addClass("code");
+        dest.find("code").addClass("code");
         // -- Code blocks
-        this.dest.find("code").each(function(index) {
+        dest.find("code").each(function(index) {
             parent = $(this).parent()
             if (parent.is("pre")) { parent.addClass('code'); }
         });
+        // -- Tables
+        dest.find("table").addClass("table table-striped");
+        // -- Images (make them fit in parent div)
+        dest.find("img").addClass("img-fluid");
     }
 }
