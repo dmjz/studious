@@ -22,6 +22,7 @@
 
 <!-- Processed lesson content -->
 <h1 class="display-3">{{ lesson.title }}</h1>
+<p class="lead"><strong>Tags: </strong>{% if lesson.tags %}{{ hashTags }}{% else %}None{% endif %}</p>
 <div id="lesson-body" class="lesson-group my-4 container color-2"></div>
 <h4 class="display-4">Review questions</h4>
 <div class="lesson-group container my-2 color-2">

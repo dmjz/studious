@@ -8,6 +8,7 @@ import string
 import random
 from datetime import timedelta
 import math
+import re
 
 def random_string(length):
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
@@ -20,6 +21,25 @@ def nearest_hour(dt):
         return atTheHour
     else:
         return atTheHour + timedelta(hours=1)
+
+def clean_csv_tags(s):
+    """ Clean string of tags separated by commas """
+
+    split = s.split(',')
+    cleaned = [re.sub(r'\s+', ' ', t).strip() for t in split]
+    return ','.join(cleaned)
+
+def csv_tags_to_hash_list(s):
+    """ Process str of tags separated by commas into string
+        of cleaned tags prefixed by hashes
+        e.g. ugly  ,     tag, string -> #ugly #tag #string
+    """
+
+    clean = clean_csv_tags(s).split(',')
+    res = ''
+    for t in clean: 
+        res += ('#' + t + ' ')
+    return res.strip()
 
 def get_new_lesson_data():
     """ Return an empty lesson (for new lesson creation) """
@@ -42,6 +62,7 @@ def get_validated_lesson_data(request_or_dict):
             'title':    request_or_dict.get('title'),
             'lesson':   request_or_dict.get('lesson'),
             'examples': request_or_dict.get('examples'),
+            'tags':     request_or_dict.get('tags'),
         }
     else:
         examples = []
@@ -57,8 +78,10 @@ def get_validated_lesson_data(request_or_dict):
             'title':    data.get('titleFormInput'),
             'lesson':   data.get('fullLessonFormTextarea'),
             'examples': examples,
+            'tags':     data.get('tagsFormInput'),
         }
-    
+    lessonData['tags'] = clean_csv_tags(lessonData['tags'])
+
     for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 500)):
         if lessonData.get(field) is None:
             raise Http404(f'The required lesson field "{ field }" is missing')

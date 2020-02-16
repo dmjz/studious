@@ -11,6 +11,22 @@ $( document ).ready(function() {
     titleSourceElement.keyup(updateTitle);
     updateTitle();
 
+    // Tags writer
+    var tagsSourceElement  = $("#tagsFormInput"),
+        tagsDestElement    = $("#tags-target");
+    var csv_to_hash_list = function(s) {
+        var split = s.replace("/\s+/gm", " ").split(",");
+        var res = ""
+        for (t of split) { res += (" #" + t.trim()); }
+        return res.slice(1);
+    };
+    updateTags = function(e) {
+        tagsText = tagsSourceElement.val();
+        tagsDestElement.text(csv_to_hash_list(tagsText));
+    };
+    tagsSourceElement.keyup(updateTags);
+    updateTags();
+
     // Markdown conversion
     var converter = new MarkdownConverter(
         sourceString    = "#fullLessonFormTextarea",

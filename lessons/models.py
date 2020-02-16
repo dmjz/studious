@@ -30,5 +30,9 @@ class Lesson(models.Model):
     review_incorrect = models.PositiveIntegerField(default=0)
     review_started = models.DateTimeField(default=None, null=True)
 
+    # Publish/search fields
+    is_public = models.BooleanField(default=False)
+    tags = models.TextField(default='', max_length=500)
+
     def __str__(self):
         return f'<Lesson { self.id }: { self.owner }, { self.created }>'

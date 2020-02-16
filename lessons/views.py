@@ -9,7 +9,9 @@ from lessons.models import Lesson
 import json
 import string
 import random
-from lessons.utils import get_new_lesson_data, get_validated_lesson_data, read_lesson_data
+from lessons.utils import \
+    get_new_lesson_data, get_validated_lesson_data, read_lesson_data, \
+    csv_tags_to_hash_list
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def new(request):
@@ -53,15 +55,24 @@ def edit(request, lesson_id):
         return render(
             request, 
             'edit.html', 
-            {'lesson': lessonData, 'lesson_id': lesson_id},
+            {
+                'lesson': lessonData, 
+                'lesson_id': lesson_id,
+            },
         )
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def view(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     lessonData = read_lesson_data(lesson)
+    # Process the tags into hash list for display
+    hashTags = csv_tags_to_hash_list(lessonData['tags'])
     return render(
         request, 
         'view.html', 
-        {'lesson': lessonData, 'lesson_id': lesson_id},
+        {
+            'lesson': lessonData, 
+            'lesson_id': lesson_id, 
+            'hashTags': hashTags,
+        },
     )
