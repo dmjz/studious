@@ -27,7 +27,10 @@ def clean_csv_tags(s):
 
     split = s.split(',')
     cleaned = [re.sub(r'\s+', ' ', t).strip() for t in split]
-    return ','.join(cleaned)
+    cleaned = [t for t in cleaned if t]
+    if cleaned: 
+        return ','.join(cleaned)
+    return ''
 
 def csv_tags_to_hash_list(s):
     """ Process str of tags separated by commas into string
@@ -48,6 +51,7 @@ def get_new_lesson_data():
         'title':    f'New lesson (#{ random_string(8) })',
         'lesson':   newLessonText,
         'examples': [{'question': 'question 1', 'answer': 'answer 1'}],
+        'tags':     '',
     }
 
 def get_validated_lesson_data(request_or_dict):
@@ -97,12 +101,16 @@ def get_validated_lesson_data(request_or_dict):
     return lessonData
 
 def read_lesson_data(lesson):
+    """ Open a lesson's file and return the data """
+
     lesson.file.open(mode='r')
     lessonData = json.loads(lesson.file.read())
     lesson.file.close()
     return lessonData
 
 def get_review_QnAs(lesson):
+    """ Parse lesson's data and return list of question, answer pairs """
+
     data = read_lesson_data(lesson)
     return [(ex['question'], ex['answer']) for ex in data['examples']]
 
@@ -120,6 +128,8 @@ nextReviewTimedeltaTable = {
 }
 
 def new_review_stage(lesson, isCorrect):
+    """ Return next review stage (after user answers a lesson's review) """
+
     if isCorrect:
         return lesson.review_stage + 1
     else:
@@ -128,6 +138,8 @@ def new_review_stage(lesson, isCorrect):
         return max(1, lesson.review_stage - (incorrectPenalty * stagePenalty))
 
 def update_review_fields(lesson, isCorrect):
+    """ Update lesson fields relating to reviews """
+
     now = timezone.now()
     if lesson.next_review_time > now:
         raise DataError('The lesson is not available for review yet.')
@@ -146,3 +158,14 @@ def update_review_fields(lesson, isCorrect):
         'next_review_time',
     ])
     print(f'Updated lesson { lesson.id }')
+
+def search_lessons(searchText):
+    """ Return (terms, results) where terms are parsed search text,
+        results are lessons returned by the search
+    """
+    
+    ###
+    ### TODO
+    ###
+
+    return (searchText.lower().split(), [])

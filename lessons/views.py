@@ -5,13 +5,14 @@ from django.core.files.storage import FileSystemStorage
 from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.core.exceptions import PermissionDenied
 from lessons.models import Lesson
 import json
 import string
 import random
 from lessons.utils import \
     get_new_lesson_data, get_validated_lesson_data, read_lesson_data, \
-    csv_tags_to_hash_list
+    csv_tags_to_hash_list, search_lessons
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def new(request):
@@ -35,7 +36,7 @@ def new(request):
 def edit(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     if request.user != lesson.owner:
-        return redirect('view', lesson_id=lesson_id)
+        raise PermissionDenied
     if request.method == 'POST':
         # Modify and save lesson
         lessonData = get_validated_lesson_data(request)
@@ -64,6 +65,8 @@ def edit(request, lesson_id):
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def view(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
+    if request.user != lesson.owner and not lesson.is_public:
+        raise PermissionDenied
     lessonData = read_lesson_data(lesson)
     # Process the tags into hash list for display
     hashTags = csv_tags_to_hash_list(lessonData['tags'])
@@ -76,3 +79,18 @@ def view(request, lesson_id):
             'hashTags': hashTags,
         },
     )
+
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
+def publish(request, lesson_id):
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    if request.user != lesson.owner:
+        return redirect('view', lesson_id=lesson_id)
+    lesson.is_public = True
+    lesson.save(update_fields=['is_public'])
+    return redirect('profile')
+
+def search(request):
+    if request.method == 'POST':
+        searchText = request.POST.get('search-input')
+        terms, results = search_lessons(searchText)
+        return render(request, 'search.html', { 'terms': terms, 'results': results })

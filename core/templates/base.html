@@ -52,6 +52,14 @@
                 </li>
                 {% endif %}
             </ul>
+            <form method="POST" action="{% url 'search' %}" class="form-inline my-2 my-lg-0">
+                {% csrf_token %}
+                <input 
+                    id="search-input" name="search-input" 
+                    class="form-control mr-sm-2" type="search" 
+                    placeholder="Search lessons" aria-label="Search lessons">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Go</button>
+            </form>
         </div>
     </nav>
     {% endblock %}

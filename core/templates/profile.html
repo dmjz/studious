@@ -49,7 +49,14 @@
                     class="btn btn-primary border ml-2" 
                     href="{% url 'edit' lesson_id=lesson.id %}" 
                     role="button"
-                >Edit</a>                    
+                >Edit</a>
+                {% if not lesson.is_public %} 
+                <a 
+                    class="btn btn-primary border ml-2" 
+                    href="{% url 'publish' lesson_id=lesson.id %}" 
+                    role="button"
+                >Publish</a>
+                {% endif %}                    
                 <span class="ml-2 align-middle">{{ lesson.title }}</span>
             </div>
             {% else %}
@@ -63,7 +70,14 @@
                     class="btn btn-primary border ml-2" 
                     href="{% url 'edit' lesson_id=lesson.id %}" 
                     role="button"
-                >Edit</a>                    
+                >Edit</a>
+                {% if not lesson.is_public %} 
+                <a 
+                    class="btn btn-primary border ml-2" 
+                    href="{% url 'publish' lesson_id=lesson.id %}" 
+                    role="button"
+                >Publish</a>
+                {% endif %}              
                 <span class="ml-2 align-middle">{{ lesson.title }}</span>
                 <a 
                     class="btn btn-primary border ml-2 float-right" 
