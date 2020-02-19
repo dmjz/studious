@@ -12,7 +12,7 @@ import string
 import random
 from lessons.utils import \
     get_new_lesson_data, get_validated_lesson_data, read_lesson_data, \
-    csv_tags_to_hash_list, search_lessons
+    search_lessons, hash_tags
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def new(request):
@@ -20,6 +20,7 @@ def new(request):
     lesson = Lesson(
         owner   = request.user,
         title   = lessonData['title'],
+        tags    = lessonData['tags'],
         created = timezone.now(), 
         file    = ContentFile(
             json.dumps(lessonData).encode('utf-8'), 
@@ -44,8 +45,8 @@ def edit(request, lesson_id):
             json.dumps(lessonData).encode('utf-8'),
             name='dummy_name'
         )
-        lesson.title, lesson.file = lessonData['title'], lessonFile
-        lesson.save(update_fields=['title', 'file'])
+        lesson.title, lesson.file, lesson.tags = lessonData['title'], lessonFile, lessonData['tags']
+        lesson.save(update_fields=['title', 'file', 'tags'])
         return redirect('view', lesson_id=lesson_id)
     else:
         lessonData = read_lesson_data(lesson)
@@ -68,15 +69,14 @@ def view(request, lesson_id):
     if request.user != lesson.owner and not lesson.is_public:
         raise PermissionDenied
     lessonData = read_lesson_data(lesson)
-    # Process the tags into hash list for display
-    hashTags = csv_tags_to_hash_list(lessonData['tags'])
+    hashTags = hash_tags(lessonData['tags'])
     return render(
         request, 
         'view.html', 
         {
             'lesson': lessonData, 
-            'lesson_id': lesson_id, 
-            'hashTags': hashTags,
+            'lesson_id': lesson_id,
+            'hash_tags': hashTags,
         },
     )
 
@@ -93,4 +93,14 @@ def search(request):
     if request.method == 'POST':
         searchText = request.POST.get('search-input')
         terms, results = search_lessons(searchText)
-        return render(request, 'search.html', { 'terms': terms, 'results': results })
+        return render(
+            request, 
+            'search.html', 
+            { 
+                'terms': terms, 
+                'results': [
+                    {'lesson': lesson, 'hash_tags': hash_tags(lesson.tags)}
+                    for lesson in results
+                ]
+            }
+        )

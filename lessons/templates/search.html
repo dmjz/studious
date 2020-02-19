@@ -4,7 +4,25 @@
 {% block title %}Studious - Search results{% endblock %}
 
 {% block content %}
-<p>Placeholder for search results :^)</p>
-<p>{{ terms }}</p>
-<p>{{ results }}</p>
+<p>Search terms: {{ terms }}</p>
+
+<div class="m-4 p-4 shadow-sm rounded-sm color-2">
+    <h1 class="display-6">Search results</h1>
+    {% if not results %}
+        <p>No lessons found</p>
+    {% else %}
+        {% for result in results %}
+        <div class="my-2 p-3 shadow-sm rounded-sm border color-3">
+            <a 
+                class="btn btn-primary border" 
+                href="{% url 'view' lesson_id=result.lesson.id %}" 
+                role="button"
+            >View</a>                 
+            <span class="ml-2 align-middle lead"><strong>{{ result.lesson.title }}</strong></span>
+            <p class="ml-2 mt-4 align-middle"><em>Owner:</em>  {{ result.lesson.owner }}</p>
+            <p class="ml-2 align-middle"><em>Tags:</em>   {{ result.hash_tags }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}

@@ -32,10 +32,10 @@ def clean_csv_tags(s):
         return ','.join(cleaned)
     return ''
 
-def csv_tags_to_hash_list(s):
+def hash_tags(s):
     """ Process str of tags separated by commas into string
         of cleaned tags prefixed by hashes
-        e.g. ugly  ,     tag, string -> #ugly #tag #string
+        e.g. raw,tag,string -> #raw #tag #string
     """
 
     clean = clean_csv_tags(s).split(',')
@@ -84,7 +84,7 @@ def get_validated_lesson_data(request_or_dict):
             'examples': examples,
             'tags':     data.get('tagsFormInput'),
         }
-    lessonData['tags'] = clean_csv_tags(lessonData['tags'])
+    lessonData['tags'] = Lesson.clean_csv_tags(lessonData['tags'])
 
     for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 500)):
         if lessonData.get(field) is None:
@@ -159,13 +159,23 @@ def update_review_fields(lesson, isCorrect):
     ])
     print(f'Updated lesson { lesson.id }')
 
+def search_tokens(lesson):
+    """ Return search tokens from title, tags of lesson """
+
+    return [
+        t.strip().lower() for t in (lesson.tags.split(',') + lesson.title.split()) if t
+    ]
+
 def search_lessons(searchText):
     """ Return (terms, results) where terms are parsed search text,
         results are lessons returned by the search
-    """
-    
-    ###
-    ### TODO
-    ###
 
-    return (searchText.lower().split(), [])
+        Searches tokens from split title and tags against tokens from searchText
+    """
+
+    terms = searchText.lower().split()
+    results = [
+        lesson for lesson in Lesson.objects.filter(is_public=True)
+        if any((term in search_tokens(lesson) for term in terms))
+    ]
+    return (terms, results)
