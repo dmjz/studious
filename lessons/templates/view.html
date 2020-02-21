@@ -23,6 +23,15 @@
 <!-- Processed lesson content -->
 <h1 class="display-3">{{ lesson.title }}</h1>
 <p class="lead"><strong>Tags: </strong>{% if lesson.tags %}{{ hash_tags }}{% else %}None{% endif %}</p>
+{% if not original_lesson_id == 'None' %}
+<p class="lead">
+    <a 
+        href="{% url 'view' lesson_id=original_lesson_id %}"
+        class="btn btn-outline-dark"
+    >View original lesson (Author: {{ original_owner }})</a>
+</p>
+{% endif %}
+
 <div id="lesson-body" class="lesson-group my-4 container color-2"></div>
 <h4 class="display-4">Review questions</h4>
 <div class="lesson-group container my-2 color-2">
@@ -41,11 +50,19 @@
 <!-- Buttons -->
 <div class="lesson-group my-4 container-fluid">
     <div class="row">
+        {% if is_owned %}
         <a 
             class="btn btn-primary" 
             href="{% url 'edit' lesson_id=lesson_id %}" 
             role="button"
         >Edit this lesson</a>
+        {% else %}
+        <a 
+            class="btn btn-primary" 
+            href="{% url 'copy' lesson_id=lesson_id %}" 
+            role="button"
+        >Make a copy</a>
+        {% endif %}
         <a 
             class="btn btn-primary" 
             href="{% url 'profile' %}" 

@@ -38,6 +38,8 @@ def hash_tags(s):
         e.g. raw,tag,string -> #raw #tag #string
     """
 
+    if not s:
+        return ''
     clean = clean_csv_tags(s).split(',')
     res = ''
     for t in clean: 
@@ -84,7 +86,7 @@ def get_validated_lesson_data(request_or_dict):
             'examples': examples,
             'tags':     data.get('tagsFormInput'),
         }
-    lessonData['tags'] = Lesson.clean_csv_tags(lessonData['tags'])
+    lessonData['tags'] = clean_csv_tags(lessonData['tags'])
 
     for field, maxLength in (('title', 500), ('lesson', 10000), ('examples', 500)):
         if lessonData.get(field) is None:

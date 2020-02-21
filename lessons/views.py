@@ -78,8 +78,11 @@ def view(request, lesson_id):
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     if request.user != lesson.owner and not lesson.is_public:
         raise PermissionDenied
+    originalLessonId = str(lesson.original_lesson.id) if lesson.original_lesson else 'None'
+    originalOwnerName = lesson.original_owner.username if lesson.original_owner else ''
     lessonData = read_lesson_data(lesson)
-    hashTags = hash_tags(lessonData['tags'])
+    hashTags = hash_tags(lessonData.get('tags'))
+    isOwned = (request.user == lesson.owner)
     return render(
         request, 
         'view.html', 
@@ -87,6 +90,9 @@ def view(request, lesson_id):
             'lesson': lessonData, 
             'lesson_id': lesson_id,
             'hash_tags': hashTags,
+            'is_owned': isOwned,
+            'original_lesson_id': originalLessonId,
+            'original_owner': originalOwnerName,
         },
     )
 
@@ -125,7 +131,7 @@ def copy(request, lesson_id):
 
     lessonOriginal = get_object_or_404(Lesson, pk=lesson_id)
     dataOriginal = read_lesson_data(lessonOriginal)
-    ownerOriginal = get_object_or_404(User, pk=lessonOriginal.owner)
+    ownerOriginal = lessonOriginal.owner
     lessonCopy = Lesson(
         owner   = request.user,
         title   = dataOriginal['title'],
