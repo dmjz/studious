@@ -6,6 +6,8 @@ from django.core.files.base import ContentFile
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
+from django.db.models import F
+from django.contrib.auth.models import User
 from lessons.models import Lesson
 import json
 import string
@@ -16,6 +18,8 @@ from lessons.utils import \
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def new(request):
+    """ Create a new lesson from scratch """
+
     lessonData = get_validated_lesson_data(get_new_lesson_data());
     lesson = Lesson(
         owner   = request.user,
@@ -26,6 +30,8 @@ def new(request):
             json.dumps(lessonData).encode('utf-8'), 
             name='dummy_name'
         ),
+        original_owner = request.user,
+        original_lesson = None,
     )
     if lesson:
         lesson.save()
@@ -35,6 +41,8 @@ def new(request):
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def edit(request, lesson_id):
+    """ Save edits to a lesson (if POST) or render lesson edit page """
+
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     if request.user != lesson.owner:
         raise PermissionDenied
@@ -65,6 +73,8 @@ def edit(request, lesson_id):
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def view(request, lesson_id):
+    """ Render the lesson view page """
+
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     if request.user != lesson.owner and not lesson.is_public:
         raise PermissionDenied
@@ -82,6 +92,8 @@ def view(request, lesson_id):
 
 @login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
 def publish(request, lesson_id):
+    """ Publish the lesson (becomes searchable and viewable to non-owners) """
+
     lesson = get_object_or_404(Lesson, pk=lesson_id)
     if request.user != lesson.owner:
         return redirect('view', lesson_id=lesson_id)
@@ -90,6 +102,8 @@ def publish(request, lesson_id):
     return redirect('profile')
 
 def search(request):
+    """ Search public lessons using POSTed search text """
+
     if request.method == 'POST':
         searchText = request.POST.get('search-input')
         terms, results = search_lessons(searchText)
@@ -104,3 +118,30 @@ def search(request):
                 ]
             }
         )
+
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
+def copy(request, lesson_id):
+    """ Create a user-owned copy of the lesson """
+
+    lessonOriginal = get_object_or_404(Lesson, pk=lesson_id)
+    dataOriginal = read_lesson_data(lessonOriginal)
+    ownerOriginal = get_object_or_404(User, pk=lessonOriginal.owner)
+    lessonCopy = Lesson(
+        owner   = request.user,
+        title   = dataOriginal['title'],
+        tags    = dataOriginal['tags'],
+        created = timezone.now(), 
+        file    = ContentFile(
+            json.dumps(dataOriginal).encode('utf-8'), 
+            name='dummy_name'
+        ),
+        original_owner = lessonOriginal.owner,
+        original_lesson = lessonOriginal,
+    )
+    if lessonCopy:
+        lessonCopy.save()
+        lessonOriginal.times_copied = F('times_copied') + 1
+        lessonOriginal.save(update_fields=['times_copied'])
+        return redirect('edit', lesson_id=lessonCopy.id)
+    if not lessonCopy:
+        raise Http404('For an unknown reason, we failed to copy the lesson. Sorry!')

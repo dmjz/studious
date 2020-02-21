@@ -30,9 +30,12 @@ class Lesson(models.Model):
     review_incorrect = models.PositiveIntegerField(default=0)
     review_started = models.DateTimeField(default=None, null=True)
 
-    # Publish/search fields
+    # Publish/search/copy fields
     is_public = models.BooleanField(default=False)
     tags = models.TextField(default='', max_length=500)
+    original_owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL, related_name='original_owner')
+    original_lesson = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    times_copied = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'<Lesson { self.id }: { self.owner }, { self.created }>'
