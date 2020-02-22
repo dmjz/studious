@@ -56,6 +56,27 @@
     color: #0000ff;
 }
 
+.lesson-link-1 {
+    color: black; 
+    text-decoration: none;
+    pointer-events: fill;
+}
+.lesson-link-1:hover {
+    color: #666666;
+    background-color: #0000ff;
+    text-decoration: none;
+}
+.lesson-link-2 {
+    color: white; 
+    text-decoration: none;
+    pointer-events: fill;
+}
+.lesson-link-2:hover {
+    color: #bbbbbb;
+    background-color: #0000ff;
+    text-decoration: none;
+}
+
 /* Basically Bootstrap's disabled class, but doesn't fade colors */
 .custom-a-disabled {
     cursor: default; 

@@ -39,51 +39,63 @@
     {% else %}
         {% for lesson in lessons %}
             {% if lesson.review_started %}
-            <div class="my-2 p-3 shadow-sm rounded-sm border color-4">
-                <a 
-                    class="btn btn-primary border" 
-                    href="{% url 'view' lesson_id=lesson.id %}" 
-                    role="button"
-                >View</a>
-                <a 
-                    class="btn btn-primary border ml-2" 
-                    href="{% url 'edit' lesson_id=lesson.id %}" 
-                    role="button"
-                >Edit</a>
-                {% if not lesson.is_public %} 
-                <a 
-                    class="btn btn-primary border ml-2" 
-                    href="{% url 'publish' lesson_id=lesson.id %}" 
-                    role="button"
-                >Publish</a>
-                {% endif %}                    
-                <span class="ml-2 align-middle">{{ lesson.title }}</span>
+            <div class="my-2 py-3 shadow-sm rounded-sm border color-4 row align-items-center">
+                <!-- Actions dropdown to the left -->
+                <div class="col-3">
+                    <div class="dropdown">
+                        <button 
+                            class="btn btn-primary border dropdown-toggle"
+                            type="button" 
+                            id="action-dropdown-{{ forloop.counter0 }}" 
+                            data-toggle="dropdown" 
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            >Actions</button>
+                        <div class="dropdown-menu" aria-labelledby="action-dropdown-{{ forloop.counter0 }}">
+                            <a class="dropdown-item" href="{% url 'view' lesson_id=lesson.id %}">View</a>
+                            <a class="dropdown-item" href="{% url 'edit' lesson_id=lesson.id %}">Edit</a>
+                            {% if not lesson.is_public %} 
+                            <a class="dropdown-item" href="{% url 'publish' lesson_id=lesson.id %}">Publish</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <!-- Title link to the right -->
+                <div class="col-9">
+                    <a class="lesson-link-1" href="{% url 'view' lesson_id=lesson.id %}">
+                    <h4 class="my-auto">{{ lesson.title }}</h4>
+                    </a>
+                </div>
             </div>
             {% else %}
-            <div class="my-2 p-3 shadow-sm rounded-sm border color-3">
-                <a 
-                    class="btn btn-primary border" 
-                    href="{% url 'view' lesson_id=lesson.id %}" 
-                    role="button"
-                >View</a>
-                <a 
-                    class="btn btn-primary border ml-2" 
-                    href="{% url 'edit' lesson_id=lesson.id %}" 
-                    role="button"
-                >Edit</a>
-                {% if not lesson.is_public %} 
-                <a 
-                    class="btn btn-primary border ml-2" 
-                    href="{% url 'publish' lesson_id=lesson.id %}" 
-                    role="button"
-                >Publish</a>
-                {% endif %}              
-                <span class="ml-2 align-middle">{{ lesson.title }}</span>
-                <a 
-                    class="btn btn-primary border ml-2 float-right" 
-                    href="{% url 'add_review' lesson_id=lesson.id %}" 
-                    role="button"
-                >Add to reviews</a>
+            <div class="my-2 py-3 shadow-sm rounded-sm border color-3 row align-items-center">
+                <!-- Actions dropdown to the left -->
+                <div class="col-3">
+                    <div class="dropdown">
+                        <button 
+                            class="btn btn-primary border dropdown-toggle"
+                            type="button" 
+                            id="action-dropdown-{{ forloop.counter0 }}" 
+                            data-toggle="dropdown" 
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            >Actions</button>
+                        <div class="dropdown-menu" aria-labelledby="action-dropdown-{{ forloop.counter0 }}">
+                            <a class="dropdown-item" href="{% url 'view' lesson_id=lesson.id %}">View</a>
+                            <a class="dropdown-item" href="{% url 'edit' lesson_id=lesson.id %}">Edit</a>
+                            {% if not lesson.is_public %} 
+                            <a class="dropdown-item" href="{% url 'publish' lesson_id=lesson.id %}">Publish</a>
+                            {% endif %}
+                            <a class="dropdown-item" href="{% url 'add_review' lesson_id=lesson.id %}">Add to reviews</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Title link to the right -->
+                <div class="col-9">
+                    <a class="lesson-link-2" href="{% url 'view' lesson_id=lesson.id %}">
+                    <h4 class="my-auto">{{ lesson.title }}</h4>
+                    </a>
+                </div>
             </div>
             {% endif %}
         {% endfor %}
