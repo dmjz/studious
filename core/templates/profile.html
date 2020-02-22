@@ -58,7 +58,12 @@
                             <a class="dropdown-item" href="{% url 'publish' lesson_id=lesson.id %}">Publish</a>
                             {% endif %}
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item dropdown-danger" href="#">Delete</a>
+                            <button 
+                                id="delete-button-{{ lesson.id }}"
+                                type="button"
+                                data-toggle="modal" data-target="#delete-modal"
+                                class="dropdown-item dropdown-danger delete-button"
+                                >Delete</button>
                         </div>
                     </div>
                 </div>
@@ -91,9 +96,10 @@
                             <a class="dropdown-item" href="{% url 'add_review' lesson_id=lesson.id %}">Add to reviews</a>
                             <div class="dropdown-divider"></div>
                             <button 
+                                id="delete-button-{{ lesson.id }}"
                                 type="button"
                                 data-toggle="modal" data-target="#delete-modal"
-                                class="dropdown-item dropdown-danger"
+                                class="dropdown-item dropdown-danger delete-button"
                                 >Delete</button>
                         </div>
                     </div>
@@ -129,10 +135,12 @@
         <div class="modal-body">
             <p>
                 You will lose all of this lesson's data, and all of your progress on this lessons's reviews.
-                If you're <em>absolutely sure</em> you want to delete this lesson, type "DELETE" in the field below:
+                If you're <em>absolutely sure</em> you want to delete this lesson, 
+                type "DELETE" in the field below:
             </p>
-            <form method="POST" class="form-inline">
+            <form method="POST" class="form-inline" action="{% url 'delete' %}">
                 {% csrf_token %}
+                <input type="hidden" id="delete-lesson-id" name="delete-lesson-id" value="">
                 <input type="text" class="form-control mb-2 mr-sm-2" id="delete-confirm-input" name="delete-confirm-input">
                 <button disabled type="submit" class="btn btn-danger mb-2 disabled" id="delete-final-button">Delete</button>
             </form>

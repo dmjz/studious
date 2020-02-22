@@ -151,3 +151,20 @@ def copy(request, lesson_id):
         return redirect('edit', lesson_id=lessonCopy.id)
     if not lessonCopy:
         raise Http404('For an unknown reason, we failed to copy the lesson. Sorry!')
+
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
+def delete(request):
+    """ Delete lesson (lesson_id submitted in form) """
+
+    if request.method != 'POST':
+        return redirect('profile')
+    lesson_id = request.POST.get('delete-lesson-id')
+    if not lesson_id:
+        return redirect('profile')
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    if request.user != lesson.owner:
+        raise PermissionDenied
+    else:
+        print(f'Delete lesson { lesson_id }')
+        lesson.delete()
+        return redirect('profile')

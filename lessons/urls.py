@@ -1,5 +1,5 @@
 from django.urls import path
-from lessons.views import new, edit, view, publish, search, copy
+from lessons.views import new, edit, view, publish, search, copy, delete
 
 urlpatterns = [
     path('new', new, name='new'),
@@ -8,4 +8,5 @@ urlpatterns = [
     path('publish/<int:lesson_id>', publish, name='publish'),
     path('search', search, name='search'),
     path('copy/<int:lesson_id>', copy, name='copy'),
+    path('delete', delete, name='delete'),
 ]

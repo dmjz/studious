@@ -14,4 +14,10 @@ $( document ).ready(function() {
         }
     });
 
+    // When a delete button is clicked, update modal form with the lesson id
+    $('.delete-button').on('click', function() {
+        lesson_id = $(this).attr('id').split('-')[2];
+        $('#delete-lesson-id').val(lesson_id);
+    });
+
 });
