@@ -77,6 +77,10 @@
     text-decoration: none;
 }
 
+.dropdown-danger { 
+    color: #ff4d4d;
+}
+
 /* Basically Bootstrap's disabled class, but doesn't fade colors */
 .custom-a-disabled {
     cursor: default; 
