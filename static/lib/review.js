@@ -46,6 +46,43 @@ $( document ).ready(function() {
                 }
             };
 
+            var edit_distance = function(s, t) {
+                /* Return edit distance between two strings */
+
+                if (s.length == 0) { return t.length; }
+                if (t.length == 0) { return s.length; }
+                s = s.toLowerCase();
+                t = t.toLowerCase();
+                
+                // Initialize distance matrix and first row/col
+                var m = s.length,
+                    n = t.length,
+                    mat = [];
+                for (let i = 0; i < m; i++) { 
+                    mat[i] = [];
+                    for (let j = 0; j < n; j++) { 
+                        mat[i][j] = undefined;
+                    }
+                }
+                for (let i = 0; i < m; i++) { mat[i][0] = i; }
+                for (let j = 0; j < n; j++) { mat[0][j] = j; }
+
+                // Compute minimal distances top-left to bottom-right
+                for (let i = 1; i < m; i++) { 
+                    for (let j = 1; j < n; j++) { 
+                        var cost = -1;
+                        if (s[i] == t[j]) { cost = 0; }
+                        else { cost = 1; }
+                        mat[i][j] = Math.min(
+                            mat[i-1][j] + 1,
+                            mat[i][j-1] + 1,
+                            mat[i-1][j-1] + cost
+                        );
+                    }
+                }
+                return mat[m-1][n-1];
+            }
+
             // Shuffle reviews and select random question, answer per review
             var reviews = data['reviews'];
             shuffle(reviews);
@@ -193,6 +230,7 @@ $( document ).ready(function() {
                 var isCorrect = true;
                 pageState['answer_submitted'] = true;
                 pageActions['set_color_class']('color-correct');
+                pageActions['show_answer']();
                 pageActions['update_review'](isCorrect);
                 pageActions['enable_details']();
             };
@@ -230,28 +268,26 @@ $( document ).ready(function() {
             submitButton.click(function(e) {
                 e.preventDefault();
                 if (pageState['answer_submitted']) {
-                    console.log('Next review');
                     next_actions();
                 } else {
                     crv = get_current_review_values();
-                    if (crv['user_answer'] == crv['correct_answer']) {
-                        console.log('Correct!');
+                    // Decide if answer is correct within tolerance
+                    var correct = crv['correct_answer'];
+                    var maxErr = 0;
+                    if      (correct.length < 4)    { maxErr = 0; }
+                    else if (correct.length <= 8)   { maxErr = 1; }
+                    else if (correct.length <= 12)  { maxErr = 2; }
+                    else                            { maxErr = 4; }
+                    if (edit_distance(crv['user_answer'], crv['correct_answer']) <= maxErr) {
                         correct_actions();
                     } else {
-                        console.log('Incorrect. You dumb as hell');
-                        console.log(crv['correct_answer']);
                         incorrect_actions();
                     }
                 }
-
-                console.log('Page state:');
-                console.log(pageState);
             });
 
             // Before exiting, send server your review progress for processing
-            $( window ).on('beforeunload', function() { 
-                console.log('sup bruh');
-                console.log(reviews);
+            $( window ).on('beforeunload', function() {
                 postReviews(isExit=true); 
             });
         },
