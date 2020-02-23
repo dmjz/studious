@@ -4,12 +4,19 @@
 {% block title %}Studious - Search results{% endblock %}
 
 {% block content %}
-<p>Search terms: {{ terms }}</p>
+<div class="m-4 p-4 shadow-sm rounded-sm color-2">
+    <p class="lead my-auto">
+        <strong>Search terms: </strong>
+        {% for term in terms %}
+        <span>{{ term }};</span>
+        {% endfor %}
+    </p>
+</div>
 
 <div class="m-4 p-4 shadow-sm rounded-sm color-2">
-    <h1 class="display-6">Search results</h1>
+    <h1 class="display-4">Search results</h1>
     {% if not results %}
-        <p>No lessons found</p>
+        <h4 class="display-6">No lessons found</h4>
     {% else %}
         {% for result in results %}
         <div class="my-2 p-3 shadow-sm rounded-sm border color-3">

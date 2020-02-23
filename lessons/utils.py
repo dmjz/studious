@@ -175,7 +175,7 @@ def search_lessons(searchText):
         Searches tokens from split title and tags against tokens from searchText
     """
 
-    terms = searchText.lower().split()
+    terms = [t.lower().replace(',', '') for t in searchText.split()]
     results = [
         lesson for lesson in Lesson.objects.filter(is_public=True)
         if any((term in search_tokens(lesson) for term in terms))
