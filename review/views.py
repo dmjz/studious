@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.urls import reverse
 from datetime import timedelta
 from lessons.models import Lesson
-from lessons.utils import get_review_QnAs, update_review_fields
+from lessons.utils import get_review_QnAs, update_review_fields, read_lesson_data
 import json
 
 def round_hour(dt):
@@ -65,4 +65,25 @@ def save_progress(request):
         'status': 200, 
         'statusText': 'OK',
         'redirect': reverse('profile'),
+    })
+
+@login_required(login_url=settings.LOGIN_REQUIRED_REDIRECT)
+def lesson_details(request):
+    if request.method != 'POST':
+        return JsonResponse({
+            'status': 405, 
+            'statusText': 'Method Not Allowed',
+            'lesson_id': '',
+            'data': '',
+        })
+    lesson_id = request.POST.get('lesson_id')
+    lesson = get_object_or_404(Lesson, pk=lesson_id)
+    if lesson.owner != request.user:
+        raise PermissionDenied('You don\'t have access to this lesson through your reviews.')
+    lessonData = read_lesson_data(lesson)
+    return JsonResponse({
+        'status': 200, 
+        'statusText': 'OK',
+        'lesson_id': lesson_id,
+        'data': lessonData,
     })

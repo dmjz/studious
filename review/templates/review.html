@@ -3,6 +3,18 @@
 
 {% block title %}Studious - Review{% endblock %}
 
+{% block head %}
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js"
+    crossorigin="anonymous">
+</script>
+<script 
+    src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it-emoji/1.4.0/markdown-it-emoji.min.js" 
+    integrity="sha256-sCkD25+gPZ/B1/sRgCfgc/CRu11VuHttkcciyDZRJgs=" 
+    crossorigin="anonymous">
+</script>
+{% endblock %}
+
 <!-- Custom navbar for the review page -->
 {% block navbar %}
 <nav class="navbar fixed-top navbar-expand navbar-light color-2">
@@ -30,7 +42,7 @@
     <button type="button" id="lesson-btn" class="btn btn-secondary btn-block disabled">Lesson details</button>
 </div>
 
-<div id="lesson-div" class="m-4 p-4 shadow-sm rounded-sm color-2 text-center d-none">
+<div id="lesson-div" class="m-4 p-4 shadow-sm rounded-sm color-2 d-none">
 </div>
 {% endblock %}
 
@@ -39,7 +51,9 @@
     AVAILABLE_REVIEWS_URL = '{% url 'available' %}';
     SAVE_REVIEWS_URL = '{% url 'save_progress' %}';
     PROFILE_URL = '{% url 'profile' %}';
+    LESSON_DETAILS_URL = '{% url 'lesson_details' %}';
     CSRF_TOKEN = '{{ csrf_token }}';
 </script>
+<script src="{% static 'lib/markdown_convert.js' %}"></script>
 <script src="{% static 'lib/review.js' %}"></script>
 {% endblock %}

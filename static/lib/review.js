@@ -12,6 +12,8 @@ $( document ).ready(function() {
         method: 'GET',
         success: function(data) {
 
+            console.log(data['reviews']);
+
             // Redirect if no reviews
             if (data['reviews'].length == 0) { window.location.replace(PROFILE_URL); }
 
@@ -137,11 +139,57 @@ $( document ).ready(function() {
                 if (!pageState['details_enabled']) { return false; }
                 var lessonDiv = $('#lesson-div');
                 if (lessonDiv.hasClass('d-none')) {
+                    lessonDiv.html('<p class="lead">Loading lesson details...</p>');
                     lessonDiv.removeClass('d-none');
-                    //
-                    // TODO: display real lesson details here
-                    //
-                    lessonDiv.html('<p>This feature coming soon :^)</p>');
+                    lesson_id = reviews[pageState['review_index']]['lesson_id']
+                    console.log('Get lesson_id=' + lesson_id);
+                    ///
+                    /// ---- TODO ----
+                    ///
+                    /// Add the code to parse and display the lesson details -
+                    ///     should look like view.html basically, though you can omit tags
+                    ///     and original owner
+                    ///
+                    $.ajax({
+                        headers: { "X-CSRFToken": CSRF_TOKEN },
+                        url: LESSON_DETAILS_URL,
+                        method: 'POST',
+                        data: {"lesson_id": lesson_id},
+                        success: function(data) {
+                            if (data['status'] != '200') {
+                                console.log('Error loading lesson details:');
+                                console.log(data['status'] + ' ' + data['statusText']);
+                            } else {
+                                var lessonData = data['data'];
+                                var titleString = '<h1 class="display-4">' + lessonData['title'] + '</h1>';
+                                var bodyString  = '<div id="lesson-body" class="lesson-group my-4 container color-2"></div>';
+                                var examplesString = '<div class="lesson-group container my-2 color-2">'
+                                for (example of lessonData['examples']) {
+                                    examplesString += 
+                                    '<div class="row">'
+                                        + '<div class="col-sm-4">'
+                                            + '<p class="lead"><strong>Q: </strong>' + example['question'] + '</p>'
+                                        + '</div>'
+                                        + '<div class="col-sm-4">'
+                                            + '<p class="lead"><strong>A: </strong>' + example['answer'] + '</p>'
+                                        + '</div>'
+                                    + '</div>';
+                                }
+                                examplesString += '</div>';
+                                $('#lesson-div').html(
+                                    titleString 
+                                    + '<hr/>' + bodyString
+                                    + '<hr/>' + examplesString
+                                );
+                                var converter = new MarkdownConverter(
+                                    sourceString    = lessonData['lesson'],
+                                    destString      = '#lesson-body',
+                                    immediateConvert = true,
+                                    isJquerySource  = false
+                                );
+                            }
+                        }
+                    })
                 } else {
                     lessonDiv.addClass('d-none');
                     lessonDiv.html('');
@@ -273,15 +321,18 @@ $( document ).ready(function() {
                     crv = get_current_review_values();
                     // Decide if answer is correct within tolerance
                     var correct = crv['correct_answer'];
-                    var maxErr = 0;
-                    if      (correct.length < 4)    { maxErr = 0; }
-                    else if (correct.length <= 8)   { maxErr = 1; }
-                    else if (correct.length <= 12)  { maxErr = 2; }
-                    else                            { maxErr = 4; }
-                    if (edit_distance(crv['user_answer'], crv['correct_answer']) <= maxErr) {
-                        correct_actions();
-                    } else {
-                        incorrect_actions();
+                    var user = crv['user_answer'];
+                    if (user.length > 0) {
+                        var maxErr = 0;
+                        if      (correct.length < 4)    { maxErr = 0; }
+                        else if (correct.length <= 8)   { maxErr = 1; }
+                        else if (correct.length <= 12)  { maxErr = 2; }
+                        else                            { maxErr = 4; }
+                        if (edit_distance(crv['user_answer'], crv['correct_answer']) <= maxErr) {
+                            correct_actions();
+                        } else {
+                            incorrect_actions();
+                        }
                     }
                 }
             });
