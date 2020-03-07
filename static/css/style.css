@@ -1,3 +1,38 @@
+body {
+    font-family: 'Quicksand', 'Roboto', Arial, sans-serif;
+}
+
+.home-card:hover {
+    transform: scale(1.1);
+    background-color: #eefbff;
+}
+
+.get-started-btn:active {
+    transform: translate(2px, 2px);
+}
+
+.name-header {
+    font-size: 9rem;
+}
+
+/* .home-jumbo {
+    opacity: 0.8;
+} */
+
+.home-bg-image {
+    /*background-image: url(https://i.imgur.com/q3yYv2a.jpg); /* url(https://i.imgur.com/g0WkZfr.jpg); */
+    /* background-image: linear-gradient(#b1cbbb, #adcfba);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; */
+    background: rgb(177,203,187);
+    background: -moz-radial-gradient(circle, rgba(177,203,187,1) 0%, rgba(160,190,171,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(177,203,187,1) 0%, rgba(160,190,171,1) 100%);
+    background: radial-gradient(circle, rgba(177,203,187,1) 0%, rgba(160,190,171,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b1cbbb",endColorstr="#a0beab",GradientType=1);
+}
+
 .color-1 {
     background-color: #b1cbbb;
 }
@@ -79,6 +114,10 @@
 
 .dropdown-danger { 
     color: #ff4d4d;
+}
+
+.nav-item > .btn {
+    margin-left: 1rem;
 }
 
 /* Basically Bootstrap's disabled class, but doesn't fade colors */

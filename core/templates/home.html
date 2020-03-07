@@ -7,45 +7,68 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 {% endblock %}
 
-{% block content %}
-<div class="jumbotron jumbotron-fluid pl-4 color-2 shadow-sm text-center">
-    <h1 class="display-2">Studious</h1>
-    <p class="lead">The best tool to organize and optimize your learning.</p>
-</div>
+{% block content-container-overwrite %}
+<div class="container home-container">
+    <div class="jumbotron home-jumbo jumbotron-fluid pl-4 bg-transparent text-center">
+        <h1 class="display-1 name-header"><strong>Studious</strong></h1>
+        <p>- - -</p>
+        <h2 class="mt-4">Achieve your learning goals</h2>
+    </div>
 
-<div class="row">
-    <div class="col-sm d-flex mt-2">
-        <div class="card shadow flex-fill text-center color-2" style="width: 18rem;">
-            <div class="card-body">
-                <i class="fa fa-pencil-square-o fa-2x my-2"></i>
-                <h2 class="card-title">Learn</h2>
-                <p class="card-text">Design your own lessons for whatever you want to learn</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm d-flex mt-2">
-        <div class="card shadow flex-fill text-center color-2" style="width: 18rem;">
-            <div class="card-body">
-                <i class="fa fa-book fa-2x my-2"></i>
-                <h2 class="card-title">Review</h2>
-                <p class="card-text">Use our spaced repetition system to review efficiently</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm d-flex mt-2">
-        <div class="card shadow flex-fill text-center color-2" style="width: 18rem;">
-            <div class="card-body">
-                <i class="fa fa-comment fa-2x my-2"></i>
-                <h2 class="card-title">Share</h2>
-                <p class="card-text">Publish your lessons, or share them with friends</p>
-            </div>
-        </div>
-    </div>
-</div>
+    <div class="row">
 
-<a href="{% url 'signup' %}" class="a-btn">
-    <div class="jumbotron jumbotron-fluid mt-4 p-2 color-3 text-center shadow border rounded">
-        <h2 class="display-4">Get started</h2>
+        <div class="col-sm-6 d-flex mb-4">
+            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
+                <div class="card-body">
+                    <i class="fa fa-pencil-square-o fa-2x my-2"></i>
+                    <h2 class="card-title">Create</h2>
+                    <p class="card-text">Design your own lessons for what you want to learn</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 d-flex mb-4">
+            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
+                <div class="card-body">
+                    <i class="fa fa-comment fa-2x my-2"></i>
+                    <h2 class="card-title">Share</h2>
+                    <p class="card-text">Publish your lessons or share them with friends</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 d-flex mb-4">
+            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
+                <div class="card-body">
+                    <i class="fa fa-search fa-2x my-2"></i>
+                    <h2 class="card-title">Explore</h2>
+                    <p class="card-text">Learn from public lessons created by the community</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 d-flex mb-4">
+            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
+                <div class="card-body">
+                    <i class="fa fa-book fa-2x my-2"></i>
+                    <h2 class="card-title">Master</h2>
+                    <p class="card-text">Use our spaced repetition system to review efficiently</p>
+                </div>
+            </div>
+        </div>
+        
     </div>
-</a>
+
+    <a href="{% url 'signup' %}" class="a-btn">
+        <div class="jumbotron jumbotron-fluid my-5 p-2 color-3 text-center shadow border rounded get-started-btn">
+            <h2 class="display-4">Get started!</h2>
+        </div>
+    </a>
+</div>
+{% endblock %}
+
+{% block endbody %}
+<script>
+    $('body').addClass('home-bg-image');
+</script>
 {% endblock %}
