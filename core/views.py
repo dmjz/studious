@@ -61,8 +61,8 @@ def signup(request):
             login(request, checkUser)
             return redirect('profile')
         else:
-            message = '\n'.join((f'{k}: {v}' for k, v in form.errors.as_data().items()))
-            raise Http404(message)
+            # Return the form with its error messages to display to user
+            return render(request, 'signup.html', {'form': form})
     else:
         return render(request, 'signup.html', {'form': SignupForm()})
 
