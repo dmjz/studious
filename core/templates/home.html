@@ -5,15 +5,48 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <style>
+        body{padding-top: 0px;}
+        .home-jumbo {
+            background-image: url({% static "images/header.jpg" %});
+            background-size: cover;
+        }
+    </style>
 {% endblock %}
 
+<!-- Kill the inherited navbar -->
+{% block navbar %}{% endblock %}
+
 {% block content-container-overwrite %}
-<div class="container home-container">
-    <div class="jumbotron home-jumbo jumbotron-fluid pl-4 bg-transparent text-center">
-        <h1 class="display-1 name-header"><strong>Studious</strong></h1>
-        <p>- - -</p>
-        <h2 class="mt-4">Achieve your learning goals</h2>
+
+<div class="jumbotron home-jumbo jumbotron-fluid pl-4 text-center">
+    <h1 class="text-white text-roboto name-header"><strong>Studious</strong></h1>
+    <div class="d-flex justify-content-center mb-4">
+        <ul class="list-group list-group-horizontal d-flex justify-content-center mb-4">
+            {% if user.is_authenticated %}
+            <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                <a class="text-white" href="{% url 'profile' %}">Profile</a>
+            </li>
+            {% endif %}
+            {% if not user.is_authenticated %}
+            <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                <a class="text-white" href="{% url 'login' %}">Login</a>
+            </li>
+            {% endif %}
+            <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                <a class="text-white" href="{% url 'signup' %}">Register</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                <a class="text-white" href="{% url 'logout' %}">Log out</a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
+    <p class="mt-5 mb-0 text-white display-4">Achieve your learning goals</p>
+</div>
+
+<div class="container home-container">
 
     <div class="row">
 

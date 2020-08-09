@@ -12,12 +12,13 @@ body {
 }
 
 .name-header {
-    font-size: 9rem;
+    font-size: 4rem;
 }
 
-/* .home-jumbo {
-    opacity: 0.8;
-} */
+.header-li {
+    border: none;
+    font-size: 1.5rem;
+}
 
 .home-bg-image {
     /*background-image: url(https://i.imgur.com/q3yYv2a.jpg); /* url(https://i.imgur.com/g0WkZfr.jpg); */
@@ -31,6 +32,14 @@ body {
     background: -webkit-radial-gradient(circle, rgba(177,203,187,1) 0%, rgba(160,190,171,1) 100%);
     background: radial-gradient(circle, rgba(177,203,187,1) 0%, rgba(160,190,171,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#b1cbbb",endColorstr="#a0beab",GradientType=1);
+}
+
+.text-roboto {
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+.text-white {
+    color: #FFFFFF;
 }
 
 .color-1 {
