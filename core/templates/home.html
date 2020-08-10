@@ -3,6 +3,13 @@
 
 {% block title %}Studious - Home{% endblock %}
 
+<!-- 
+    Note: 
+    1. empty navbar block removes the navbar
+    2. <style> tag in head removes body padding-top for navbar
+    3. <style> tag in head allows use of "static" Django template tag
+ -->
+
 {% block head %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <style>
@@ -14,7 +21,6 @@
     </style>
 {% endblock %}
 
-<!-- Kill the inherited navbar -->
 {% block navbar %}{% endblock %}
 
 {% block content-container-overwrite %}
@@ -48,7 +54,43 @@
 
 <div class="container home-container">
 
-    <div class="row">
+    <div class="row my-5">
+        <div class="col-sm-6 d-flex align-items-center">
+            <div>
+                <h2><i class="fa fa-pencil-square-o"></i> Create</h2>
+                <p class="lead">Design your own lessons for what you want to learn, using a simple but powerful Markdown editor</p>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <img src="{% static 'images/edit_screenshot.PNG' %}" class="img-fluid float-right shadow" alt="edit_screenshot.PNG">
+        </div>
+    </div>
+
+    <div class="row my-5">
+        <div class="col-sm-6">
+            <img src="{% static 'images/search_screenshot.PNG' %}" class="img-fluid float-left shadow" alt="search_screenshot.PNG">
+        </div>
+        <div class="col-sm-6 d-flex align-items-center">
+            <div>
+                <h2><i class="fa fa-comment"></i> Explore</h2>
+                <p class="lead">Learn from public lessons created by the community, and share your own lessons with friends</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row my-5">
+        <div class="col-sm-6 d-flex align-items-center">
+            <div>
+                <h2><i class="fa fa-book"></i> Master</h2>
+                <p class="lead">Optimize your study with our Spaced Repetition System for reviews</p>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <img src="{% static 'images/review_screenshot.PNG' %}" class="img-fluid float-right shadow" alt="review_screenshot.PNG">
+        </div>
+    </div>
+
+    <!-- <div class="row">
 
         <div class="col-sm-6 d-flex mb-4">
             <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
@@ -90,7 +132,7 @@
             </div>
         </div>
         
-    </div>
+    </div> -->
 
     <a href="{% url 'signup' %}" class="a-btn">
         <div class="jumbotron jumbotron-fluid my-5 p-2 color-3 text-center shadow border rounded get-started-btn">
