@@ -29,12 +29,31 @@ body {
     background: rgb(250, 250, 250) !important;
 }
 
+.mt-home-row {
+    margin-top: 8rem !important;
+}
+
+.mb-home-row {
+    margin-bottom: 8rem !important;
+}
+
+.btn-home-start {
+    padding: 10px 20px; 
+    font-size: 50px; 
+    border-radius: 10px;
+    margin-bottom: 6rem;
+}
+
 .text-roboto {
     font-family: 'Roboto', Arial, sans-serif;
 }
 
 .text-white {
     color: #FFFFFF;
+}
+
+.text-blue {
+    color: rgb(2, 107, 219);
 }
 
 .color-1 {

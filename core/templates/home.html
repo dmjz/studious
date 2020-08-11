@@ -13,10 +13,15 @@
 {% block head %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <style>
-        body{padding-top: 0px;}
-        .home-jumbo {
+        body{padding: 0px !important;}
+        .home-jumbo-head {
             background-image: url({% static "images/header.jpg" %});
             background-size: cover;
+        }
+        .home-jumbo-foot {
+            /* background-image: url({% static "images/banner_2.jpg" %}); */
+            background-color: #ccc;
+            margin-bottom: 0px !important;
         }
     </style>
 {% endblock %}
@@ -25,121 +30,81 @@
 
 {% block content-container-overwrite %}
 
-<div class="jumbotron home-jumbo jumbotron-fluid pl-4 text-center">
-    <h1 class="text-white text-roboto name-header"><strong>Studious</strong></h1>
-    <div class="d-flex justify-content-center mb-4">
-        <ul class="list-group list-group-horizontal d-flex justify-content-center mb-4">
-            {% if user.is_authenticated %}
-            <li class="list-group-item mx-4 bg-transparent rounded header-li">
-                <a class="text-white" href="{% url 'profile' %}">Profile</a>
-            </li>
-            {% endif %}
-            {% if not user.is_authenticated %}
-            <li class="list-group-item mx-4 bg-transparent rounded header-li">
-                <a class="text-white" href="{% url 'login' %}">Login</a>
-            </li>
-            {% endif %}
-            <li class="list-group-item mx-4 bg-transparent rounded header-li">
-                <a class="text-white" href="{% url 'signup' %}">Register</a>
-            </li>
-            {% if user.is_authenticated %}
-            <li class="list-group-item mx-4 bg-transparent rounded header-li">
-                <a class="text-white" href="{% url 'logout' %}">Log out</a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-    <p class="mt-5 mb-0 text-white display-4">Achieve your learning goals</p>
+<div class="jumbotron home-jumbo-head jumbotron-fluid pl-4 text-center">
+        <h1 class="text-white text-roboto name-header"><strong>Studious</strong></h1>
+        <div class="d-flex justify-content-center mb-4">
+            <ul class="list-group list-group-horizontal d-flex justify-content-center mb-4">
+                {% if user.is_authenticated %}
+                <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                    <a class="text-white" href="{% url 'profile' %}">Profile</a>
+                </li>
+                {% endif %}
+                {% if not user.is_authenticated %}
+                <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                    <a class="text-white" href="{% url 'login' %}">Login</a>
+                </li>
+                {% endif %}
+                <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                    <a class="text-white" href="{% url 'signup' %}">Register</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="list-group-item mx-4 bg-transparent rounded header-li">
+                    <a class="text-white" href="{% url 'logout' %}">Log out</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <p class="mt-5 mb-0 text-white display-4">Achieve your learning goals</p>
 </div>
 
 <div class="container home-container">
 
-    <div class="row my-5">
+    <div class="row mt-home-row">
         <div class="col-sm-6 d-flex align-items-center">
             <div>
-                <h2><i class="fa fa-pencil-square-o"></i> Create</h2>
+                <h2><i class="fa fa-pencil-square-o text-blue"></i> Create</h2>
                 <p class="lead">Design your own lessons for what you want to learn, using a simple but powerful Markdown editor</p>
             </div>
         </div>
         <div class="col-sm-6">
-            <img src="{% static 'images/edit_screenshot.PNG' %}" class="img-fluid float-right shadow" alt="edit_screenshot.PNG">
+            <img src="{% static 'images/edit_screenshot.PNG' %}" class="img-fluid float-right shadow-sm rounded" alt="edit_screenshot.PNG">
         </div>
     </div>
 
-    <div class="row my-5">
+    <div class="row mt-home-row">
         <div class="col-sm-6">
-            <img src="{% static 'images/search_screenshot.PNG' %}" class="img-fluid float-left shadow" alt="search_screenshot.PNG">
+            <img src="{% static 'images/search_screenshot.PNG' %}" class="img-fluid float-left shadow-sm rounded" alt="search_screenshot.PNG">
         </div>
-        <div class="col-sm-6 d-flex align-items-center">
+        <div class="col-sm-6 d-flex align-items-center pl-5">
             <div>
-                <h2><i class="fa fa-comment"></i> Explore</h2>
+                <h2><i class="fa fa-comment text-blue"></i> Explore</h2>
                 <p class="lead">Learn from public lessons created by the community, and share your own lessons with friends</p>
             </div>
         </div>
     </div>
 
-    <div class="row my-5">
+    <div class="row mt-home-row mb-home-row">
         <div class="col-sm-6 d-flex align-items-center">
             <div>
-                <h2><i class="fa fa-book"></i> Master</h2>
+                <h2><i class="fa fa-book text-blue"></i> Master</h2>
                 <p class="lead">Optimize your study with our Spaced Repetition System for reviews</p>
             </div>
         </div>
         <div class="col-sm-6">
-            <img src="{% static 'images/review_screenshot.PNG' %}" class="img-fluid float-right shadow" alt="review_screenshot.PNG">
+            <img src="{% static 'images/review_screenshot.PNG' %}" class="img-fluid float-right shadow-sm rounded" alt="review_screenshot.PNG">
         </div>
     </div>
 
-    <!-- <div class="row">
-
-        <div class="col-sm-6 d-flex mb-4">
-            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
-                <div class="card-body">
-                    <i class="fa fa-pencil-square-o fa-2x my-2"></i>
-                    <h2 class="card-title">Create</h2>
-                    <p class="card-text">Design your own lessons for what you want to learn</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 d-flex mb-4">
-            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
-                <div class="card-body">
-                    <i class="fa fa-comment fa-2x my-2"></i>
-                    <h2 class="card-title">Share</h2>
-                    <p class="card-text">Publish your lessons or share them with friends</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 d-flex mb-4">
-            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
-                <div class="card-body">
-                    <i class="fa fa-search fa-2x my-2"></i>
-                    <h2 class="card-title">Explore</h2>
-                    <p class="card-text">Learn from public lessons created by the community</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 d-flex mb-4">
-            <div class="card home-card shadow flex-fill text-center color-2" style="width: 18rem;">
-                <div class="card-body">
-                    <i class="fa fa-book fa-2x my-2"></i>
-                    <h2 class="card-title">Master</h2>
-                    <p class="card-text">Use our spaced repetition system to review efficiently</p>
-                </div>
-            </div>
-        </div>
-        
-    </div> -->
-
-    <a href="{% url 'signup' %}" class="a-btn">
-        <div class="jumbotron jumbotron-fluid my-5 p-2 color-3 text-center shadow border rounded get-started-btn">
-            <h2 class="display-4">Get started!</h2>
-        </div>
-    </a>
+    <div class="text-center">
+        <a href="{% url 'signup' %}" class="btn btn-outline-primary btn-home-start">
+            Get started!
+        </a>
+    </div>
 </div>
+
+<!-- <div class="container-fluid home-jumbo-foot text-center">
+    <p>footer stuff</p>
+</div> -->
 {% endblock %}
 
 {% block endbody %}
