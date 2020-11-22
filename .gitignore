@@ -1,8 +1,10 @@
-.env
+.venv/
+*.env
 .vscode
 **.pyc
 db.sqlite3
 studious/settings_local.py
 staticfiles/*
 media/*
+**.log
 core/templates/preserved_kana.html
