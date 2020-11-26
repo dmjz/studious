@@ -2,23 +2,14 @@ import subprocess
 import psutil
 import requests
 import time
+import sys
 
-# def kill_process_and_children(pid):
-#     process = psutil.Process(pid)
-#     children = process.children(recursive=True)
-#     for child in children:
-#         child.terminate()
-#     gone, alive = psutil.wait_procs(children, timeout=5)
-#     for p in alive:
-#         p.kill()
-#     process.kill()
 
+serverCommand = 'chdir .. && .\\.venv\\Scripts\\activate.bat && python manage.py runserver'
+testCommand = '..\\.venv\\Scripts\\activate.bat && pytest'
 
 # Start server and ping until response is good
-pServer = subprocess.Popen('start_server.bat')
-# time.sleep(1)
-# kill_process_and_children(pServer.pid)
-
+pServer = subprocess.Popen(serverCommand, shell=True)
 TIMEOUT = 60
 start = time.time()
 while True:
@@ -33,7 +24,7 @@ while True:
         time.sleep(1)
 
 # Run tests
-pTest = subprocess.Popen('run_tests.bat')
+pTest = subprocess.Popen(testCommand, shell=True)
 testExitCode = pTest.wait()
 print(f'Testing finished with exit_Code={ testExitCode }')
 
@@ -42,3 +33,6 @@ pTest.kill()
 pTest.terminate()
 pServer.kill()
 pServer.terminate()
+
+# Return testing exit code
+sys.exit(testExitCode)
