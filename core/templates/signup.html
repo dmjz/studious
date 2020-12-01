@@ -2,14 +2,14 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-{% block title %}Studious - Home{% endblock %}
+{% block title %}Studious - Register{% endblock %}
 
 {% block content %}
 <div class="m-4 p-4 shadow rounded-sm color-2">
     <h1 class="display-4">New account</h1>
     <form method="POST">{% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Sign up</button>
+        <button id="signup-submit-button" type="submit" class="btn btn-primary">Sign up</button>
     </form>
 </div>
 
